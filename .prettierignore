@@ -1,0 +1,14 @@
+node_modules
+.next
+out
+dist
+build
+package-lock.json
+
+# Markdown is deliberately NOT formatted.
+#
+# Prettier pads markdown table columns to align them, which means editing one cell
+# reflows every row in the table. That would destroy the single-line-edit property that
+# keeps .agents/TASKS.md conflict-free between two people. There is no upside here, so
+# all markdown is left alone.
+*.md

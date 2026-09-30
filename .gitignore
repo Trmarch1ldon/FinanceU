@@ -1,24 +1,70 @@
-# Nestjs specific
-/dist
+# dependencies
 /node_modules
-/build
-/tmp
+.pnp
+.pnp.*
 
-# Logs
+# next.js
+/.next
+/out
+next-env.d.ts
+
+# production / build output
+/build
+/dist
+/tmp
+*.tsbuildinfo
+
+# caches
+.eslintcache
+.swc
+.turbo
+/coverage
+
+# testing (if/when we add Playwright)
+/test-results
+/playwright-report
+/blob-report
+/playwright/.cache
+
+# env — commit .env.example, never a real one
+.env*
+!.env.example
+
+# logs
 logs
 *.log
 npm-debug.log*
-pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 lerna-debug.log*
 
-# dotenv environment variable files
-.env
-.env.development
-.env.test
-.env.production
+# deploy
+.vercel
 
-# temp directory
+# editors — share the project settings, ignore personal ones
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea
+*.iml
+*.swp
+*.swo
+
+# Claude Code — personal permissions, not shared
+.claude/settings.local.json
+
+# os junk (Josh may be on Windows)
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# misc
+*.pem
 .temp
 .tmp

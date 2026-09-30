@@ -1,0 +1,2 @@
+shadcn/ui components land here via the CLI: npx shadcn@latest add button card progress
+Generated code — add via the CLI and wrap rather than hand-editing. See CLAUDE.md.

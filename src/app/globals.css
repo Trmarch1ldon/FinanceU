@@ -1,0 +1,182 @@
+@import "tailwindcss";
+
+/* Tailwind v4 is CSS-first: there is no tailwind.config.ts. The palette and the
+   design tokens live here. This file is CLAIM-REQUIRED — see CLAUDE.md. Changing a
+   token here changes every screen, so claim it, keep the edit small, merge it fast. */
+
+@custom-variant dark (&:is(.dark *));
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Brand scales — Navy & Gold. Raw material; prefer the semantic tokens below.
+   ───────────────────────────────────────────────────────────────────────────── */
+:root {
+  --navy-50: #f4f7fa;
+  --navy-100: #e3eaf2;
+  --navy-200: #c3d2e3;
+  --navy-300: #94aec9;
+  --navy-400: #5e80a7;
+  --navy-500: #3c6088;
+  --navy-600: #2a4a6d;
+  --navy-700: #1e3a5f; /* primary */
+  --navy-800: #172d49;
+  --navy-900: #101f33;
+
+  --gold-100: #f7ecd5;
+  --gold-200: #edd9aa;
+  --gold-300: #e0c07a;
+  --gold-400: #d4a24c; /* accent — XP, badges, streaks */
+  --gold-500: #b8862f;
+  --gold-600: #96691f;
+
+  --cream: #fdfbf7;
+
+  --radius: 0.75rem;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Semantic tokens — light. Use these in components, never the raw scales.
+   ───────────────────────────────────────────────────────────────────────────── */
+:root {
+  --background: var(--cream);
+  --foreground: #1a202c;
+
+  --card: #ffffff;
+  --card-foreground: #1a202c;
+  --popover: #ffffff;
+  --popover-foreground: #1a202c;
+
+  --primary: var(--navy-700);
+  --primary-foreground: var(--cream);
+  --secondary: var(--navy-100);
+  --secondary-foreground: var(--navy-700);
+
+  --muted: #f0ede6;
+  --muted-foreground: #5a6577;
+
+  --accent: var(--gold-400);
+  --accent-foreground: #1a202c; /* gold needs dark text to pass contrast */
+
+  --destructive: #c53030;
+  --destructive-foreground: #ffffff;
+
+  --border: #e2ded4; /* warm, to sit on cream rather than fight it */
+  --input: #e2ded4;
+  --ring: var(--navy-700);
+
+  /* Game semantics — the quiz loop reads these, not the scales. */
+  --correct: #2f855a;
+  --correct-foreground: #ffffff;
+  --wrong: #c53030;
+  --wrong-foreground: #ffffff;
+  --xp: var(--gold-400);
+  --streak: var(--gold-400);
+  --combo: var(--gold-500);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Semantic tokens — dark. Navy becomes the ground, so gold takes over as primary
+   (navy-on-navy is invisible).
+   ───────────────────────────────────────────────────────────────────────────── */
+.dark {
+  --background: #0e1b2c;
+  --foreground: #edf2f7;
+
+  --card: #16263c;
+  --card-foreground: #edf2f7;
+  --popover: #16263c;
+  --popover-foreground: #edf2f7;
+
+  --primary: var(--gold-400);
+  --primary-foreground: var(--navy-900);
+  --secondary: var(--navy-700);
+  --secondary-foreground: #edf2f7;
+
+  --muted: #1b2e47;
+  --muted-foreground: #9aaac0;
+
+  --accent: var(--gold-400);
+  --accent-foreground: var(--navy-900);
+
+  --destructive: #e05252;
+  --destructive-foreground: #ffffff;
+
+  --border: #24384f;
+  --input: #24384f;
+  --ring: var(--gold-400);
+
+  --correct: #38a169;
+  --correct-foreground: #ffffff;
+  --wrong: #e05252;
+  --wrong-foreground: #ffffff;
+  --xp: var(--gold-300);
+  --streak: var(--gold-300);
+  --combo: var(--gold-200);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Expose tokens to Tailwind utilities: bg-primary, text-correct, border-border…
+   ───────────────────────────────────────────────────────────────────────────── */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-correct: var(--correct);
+  --color-correct-foreground: var(--correct-foreground);
+  --color-wrong: var(--wrong);
+  --color-wrong-foreground: var(--wrong-foreground);
+  --color-xp: var(--xp);
+  --color-streak: var(--streak);
+  --color-combo: var(--combo);
+
+  --color-navy-50: var(--navy-50);
+  --color-navy-100: var(--navy-100);
+  --color-navy-200: var(--navy-200);
+  --color-navy-300: var(--navy-300);
+  --color-navy-400: var(--navy-400);
+  --color-navy-500: var(--navy-500);
+  --color-navy-600: var(--navy-600);
+  --color-navy-700: var(--navy-700);
+  --color-navy-800: var(--navy-800);
+  --color-navy-900: var(--navy-900);
+  --color-gold-100: var(--gold-100);
+  --color-gold-200: var(--gold-200);
+  --color-gold-300: var(--gold-300);
+  --color-gold-400: var(--gold-400);
+  --color-gold-500: var(--gold-500);
+  --color-gold-600: var(--gold-600);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    -webkit-font-smoothing: antialiased;
+  }
+}

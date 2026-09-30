@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# Enforces the two rules that instructions alone don't reliably enforce:
+#   1. Don't commit app code to main. Claim commits (.agents/ only) are allowed.
+#   2. Don't commit unformatted code.
+#
+# Installed by `npm install` (the "prepare" script points core.hooksPath here), so it
+# works for both of us without extra deps.
+#
+# Genuinely need to bypass it: git commit --no-verify
+
+set -uo pipefail
+
+if [ -t 1 ]; then R=$'\033[31m'; Y=$'\033[33m'; B=$'\033[1m'; X=$'\033[0m'; else R=''; Y=''; B=''; X=''; fi
+
+HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=scripts/lib/identity.sh
+. "$HOOK_DIR/../lib/identity.sh"
+
+branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
+staged="$(git diff --cached --name-only --diff-filter=ACMR)"
+
+[ -z "$staged" ] && exit 0
+
+# ── 1. main is for claims only ────────────────────────────────────────────────
+if [ "$branch" = "main" ]; then
+  outside="$(printf '%s\n' "$staged" | grep -v '^\.agents/' || true)"
+  if [ -n "$outside" ]; then
+    echo "${R}${B}✗ Blocked: you're committing to main.${X}" >&2
+    echo >&2
+    echo "Only claim commits (.agents/ only) go straight to main. These files don't qualify:" >&2
+    printf '%s\n' "$outside" | sed 's/^/  /' >&2
+    echo >&2
+    echo "${Y}Fix — you almost certainly meant to branch first:${X}" >&2
+    echo "  git switch -c feat/<what-you-are-doing>" >&2
+    echo "  git commit ..." >&2
+    echo >&2
+    echo "See .agents/PROTOCOL.md. Deliberate exception: git commit --no-verify" >&2
+    exit 1
+  fi
+fi
+
+# ── 2. never write the other person's status file ─────────────────────────────
+me="$(financeu_resolve_me)"
+if [ -n "$me" ]; then
+  other="$(financeu_other "$me")"
+  if printf '%s\n' "$staged" | grep -q "^\.agents/status-$other\.md$"; then
+    echo "${R}${B}✗ Blocked: you're editing $other's status file.${X}" >&2
+    echo >&2
+    echo "  .agents/status-$other.md has exactly one writer, and it isn't you." >&2
+    echo "  Editing it is how the two sides silently disagree about who holds what." >&2
+    echo >&2
+    echo "${Y}Fix:${X}" >&2
+    echo "  git restore --staged .agents/status-$other.md      # unstage it" >&2
+    echo "  # then undo your edits to that file by hand. Do NOT add --worktree:" >&2
+    echo "  # on a file git isn't tracking yet, that deletes it outright." >&2
+    echo >&2
+    echo "  Need something from $other? Write it under '## Messages to $(printf '%s' "$other" | tr '[:lower:]' '[:upper:]' | cut -c1)$(printf '%s' "$other" | cut -c2-)'" >&2
+    echo "  in .agents/status-$me.md instead. They read it on their next session." >&2
+    exit 1
+  fi
+else
+  echo "${Y}⚠ Can't tell whether you're Thomas or Josh (git user.name/user.email).${X}" >&2
+  echo "${Y}  Skipping the status-file check. See scripts/lib/identity.sh.${X}" >&2
+fi
+
+# ── 3. formatted code only ────────────────────────────────────────────────────
+fmt="$(printf '%s\n' "$staged" | grep -E '\.(ts|tsx|js|jsx|mjs|cjs|css|json)$' || true)"
+if [ -n "$fmt" ] && [ -x node_modules/.bin/prettier ]; then
+  if ! printf '%s\n' "$fmt" | xargs node_modules/.bin/prettier --check --ignore-unknown >/dev/null 2>&1; then
+    echo "${R}${B}✗ Blocked: unformatted files staged.${X}" >&2
+    printf '%s\n' "$fmt" | xargs node_modules/.bin/prettier --list-different --ignore-unknown 2>/dev/null | sed 's/^/  /' >&2
+    echo >&2
+    echo "${Y}Fix:${X}  npm run format && git add -u" >&2
+    echo >&2
+    echo "Unformatted code makes the other person's next diff full of your lines." >&2
+    exit 1
+  fi
+fi
+
+exit 0
