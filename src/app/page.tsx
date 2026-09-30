@@ -1,76 +1,86 @@
-/**
- * Home — PLACEHOLDER.
- *
- * Task U1a replaces this with the real home shell: mode cards, XP/streak header.
- * It exists now only so `npm run dev` renders something and the palette is visible.
- * Owner of U1a: delete everything below and build it properly.
- */
 import Link from "next/link";
 
-const MODES = [
-  { id: "classic", name: "Classic", tagline: "10 questions, learn as you go", task: "M1" },
-  { id: "time-attack", name: "Time Attack", tagline: "60 seconds. Go.", task: "M2" },
-  { id: "survival", name: "Survival", tagline: "3 lives, no mercy", task: "M3" },
-  { id: "daily", name: "Daily Challenge", tagline: "One shot, keeps your streak", task: "M4" },
-];
+import { AccuracyByTopic } from "@/components/dashboard/accuracy-by-topic";
+import { ActivityHeatmap } from "@/components/dashboard/activity-heatmap";
+import { FriendsLeaderboard } from "@/components/dashboard/friends-leaderboard";
+import { Panel } from "@/components/dashboard/panel";
+import { SkillRoadmap } from "@/components/dashboard/skill-roadmap";
+import { Sparkline } from "@/components/dashboard/sparkline";
+import { StatCard } from "@/components/dashboard/stat-card";
+import { TickerBar } from "@/components/dashboard/ticker-bar";
+import { mockActivity } from "@/data/mock/activity";
+import { mockFriends, mockTicker } from "@/data/mock/friends";
+import { mockRoadmap } from "@/data/mock/roadmap";
+import { mockTopics } from "@/data/mock/topics";
+import { mockUser } from "@/data/mock/user";
 
-export default function Home() {
+export default function DashboardPage() {
+  const user = mockUser;
+
   return (
-    <main className="mx-auto max-w-3xl px-6 py-16">
-      <header className="mb-12 flex items-end justify-between gap-4">
-        <div>
-          <h1 className="text-4xl font-bold tracking-tight text-primary">FinanceU</h1>
-          <p className="mt-2 text-muted-foreground">Learn money the fun way.</p>
-        </div>
-        <div className="flex shrink-0 items-center gap-4 text-sm">
-          <span className="font-semibold text-xp">0 XP</span>
-          <span className="font-semibold text-streak">0 day streak</span>
-        </div>
-      </header>
+    <div className="mx-auto max-w-[1400px] space-y-4 p-4 lg:p-6">
+      <TickerBar items={mockTicker} />
 
-      <section className="grid gap-4 sm:grid-cols-2">
-        {MODES.map((mode) => (
-          <Link
-            key={mode.id}
-            href={`/play/${mode.id}`}
-            className="rounded-lg border bg-card p-5 transition-colors hover:border-accent"
-          >
-            <h2 className="font-semibold text-card-foreground">{mode.name}</h2>
-            <p className="mt-1 text-sm text-muted-foreground">{mode.tagline}</p>
-            <p className="mt-3 text-xs text-muted-foreground">not built yet — task {mode.task}</p>
-          </Link>
-        ))}
-      </section>
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <StatCard
+          label="Weekly XP"
+          value={user.weeklyXp.toLocaleString()}
+          note="180 above last week"
+          trend="up"
+          chart={<Sparkline values={user.weeklyXpSeries} label="Daily XP over the last 7 days" />}
+        />
+        <StatCard
+          label="Current Streak"
+          value={`${user.streakDays}`}
+          note="days — personal best is 18"
+        />
+        <StatCard
+          label="Accuracy"
+          value={`${user.accuracy}%`}
+          note="1.2 points this week"
+          trend="up"
+        />
+        <StatCard
+          label="Rank"
+          value={`#${user.globalRank.toLocaleString()}`}
+          note={`${user.friendsRank} of ${user.friendsTotal} among friends`}
+        />
+      </div>
 
-      <nav className="mt-10 flex gap-5 text-sm text-muted-foreground">
-        <Link href="/dashboard" className="hover:text-primary">
-          Dashboard
-        </Link>
-        <Link href="/topics" className="hover:text-primary">
-          Topics
-        </Link>
-      </nav>
+      <Panel
+        label="Track"
+        action={
+          <span className="font-mono text-[11px] text-muted tabular-nums">
+            3 / {mockRoadmap.length} complete
+          </span>
+        }
+      >
+        <SkillRoadmap nodes={mockRoadmap} />
+      </Panel>
 
-      {/* Palette check — delete with the rest of this placeholder. */}
-      <section className="mt-16 border-t pt-8">
-        <p className="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">
-          Palette
-        </p>
-        <div className="flex flex-wrap gap-2 text-xs">
-          {[
-            ["primary", "bg-primary text-primary-foreground"],
-            ["accent", "bg-accent text-accent-foreground"],
-            ["correct", "bg-correct text-correct-foreground"],
-            ["wrong", "bg-wrong text-wrong-foreground"],
-            ["card", "bg-card text-card-foreground border"],
-            ["muted", "bg-muted text-muted-foreground"],
-          ].map(([label, cls]) => (
-            <span key={label} className={`rounded-md px-3 py-2 ${cls}`}>
-              {label}
-            </span>
-          ))}
-        </div>
-      </section>
-    </main>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <Panel label="Accuracy by topic">
+          <AccuracyByTopic topics={mockTopics} />
+        </Panel>
+
+        <Panel
+          label="Friends this week"
+          action={
+            <Link
+              href="/leaderboard"
+              className="font-mono text-[11px] text-muted transition-colors hover:text-accent"
+            >
+              View all
+            </Link>
+          }
+        >
+          <FriendsLeaderboard friends={mockFriends} currentHandle={user.handle} />
+        </Panel>
+      </div>
+
+      <Panel label="Activity — last 12 weeks">
+        <ActivityHeatmap days={mockActivity} />
+      </Panel>
+    </div>
   );
 }
