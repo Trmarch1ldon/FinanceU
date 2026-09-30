@@ -68,3 +68,4 @@ desktop.ini
 *.pem
 .temp
 .tmp
+.gstack/

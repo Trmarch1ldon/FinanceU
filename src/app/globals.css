@@ -1,182 +1,222 @@
 @import "tailwindcss";
 
-/* Tailwind v4 is CSS-first: there is no tailwind.config.ts. The palette and the
-   design tokens live here. This file is CLAIM-REQUIRED — see CLAUDE.md. Changing a
-   token here changes every screen, so claim it, keep the edit small, merge it fast. */
+/* The sidebar's collapsed state lives on <html data-sidebar>, set before paint. This
+   variant lets components style against it declaratively (`collapsed:opacity-0`)
+   instead of threading a boolean through every child. */
+@custom-variant collapsed (:root[data-sidebar="collapsed"] &);
 
-@custom-variant dark (&:is(.dark *));
+/* Tailwind v4 is CSS-first: there is no tailwind.config.ts. The palette and design
+   tokens live here. CLAIM-REQUIRED — see CLAUDE.md. A token change here changes every
+   screen, so keep the edit small and merge it fast.
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   Brand scales — Navy & Gold. Raw material; prefer the semantic tokens below.
-   ───────────────────────────────────────────────────────────────────────────── */
+   Direction: Bloomberg terminal, dark only. There is no light theme and no toggle —
+   don't add `.dark` variants. See .agents/DECISIONS.md (2026-09-30). */
+
 :root {
-  --navy-50: #f4f7fa;
-  --navy-100: #e3eaf2;
-  --navy-200: #c3d2e3;
-  --navy-300: #94aec9;
-  --navy-400: #5e80a7;
-  --navy-500: #3c6088;
-  --navy-600: #2a4a6d;
-  --navy-700: #1e3a5f; /* primary */
-  --navy-800: #172d49;
-  --navy-900: #101f33;
+  /* ── Ground ───────────────────────────────────────────────────────────────── */
+  --bg: #0a0a0a;
+  --panel: #121417;
+  --panel-hover: #171a1e;
+  --border: #1f2328;
+  --border-strong: #2a2f36;
 
-  --gold-100: #f7ecd5;
-  --gold-200: #edd9aa;
-  --gold-300: #e0c07a;
-  --gold-400: #d4a24c; /* accent — XP, badges, streaks */
-  --gold-500: #b8862f;
-  --gold-600: #96691f;
+  /* ── Ink ──────────────────────────────────────────────────────────────────── */
+  --fg: #e6e6e6;
+  --muted: #9aa5b1;
+  --locked: #2a2f36; /* unreachable roadmap nodes, disabled */
 
-  --cream: #fdfbf7;
+  /* ── Accent. Scarce on purpose: active nav, in-progress, focus. Nothing else. ─ */
+  --accent: #ff9f1c;
+  --accent-dim: rgba(255, 159, 28, 0.12);
+  --accent-edge: rgba(255, 159, 28, 0.35);
 
-  --radius: 0.75rem;
+  /* ── Value. Gains/losses and right/wrong ONLY — never decoration, and always
+        paired with ▲▼ or an icon so colour is never the sole signal. ──────────── */
+  /* Measurement fills. Deliberately NOT the accent: orange means your progression
+     (rank, track, where you are), this means "a number we measured". */
+  --bar: #4e5a66;
+
+  --up: #00c076;
+  --down: #ff4d4f;
+  --up-dim: rgba(0, 192, 118, 0.14);
+  --down-dim: rgba(255, 77, 79, 0.14);
+
+  --radius: 2px;
+  --sidebar-w: 280px;
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   Semantic tokens — light. Use these in components, never the raw scales.
-   ───────────────────────────────────────────────────────────────────────────── */
+/* Set before paint by the inline script in layout.tsx, so the sidebar never snaps
+   to the wrong width on load. */
+:root[data-sidebar="collapsed"] {
+  --sidebar-w: 72px;
+}
+
+/* shadcn/ui reads these names. Mapped so `npx shadcn add` components inherit the
+   terminal palette instead of shipping their own greys. */
 :root {
-  --background: var(--cream);
-  --foreground: #1a202c;
-
-  --card: #ffffff;
-  --card-foreground: #1a202c;
-  --popover: #ffffff;
-  --popover-foreground: #1a202c;
-
-  --primary: var(--navy-700);
-  --primary-foreground: var(--cream);
-  --secondary: var(--navy-100);
-  --secondary-foreground: var(--navy-700);
-
-  --muted: #f0ede6;
-  --muted-foreground: #5a6577;
-
-  --accent: var(--gold-400);
-  --accent-foreground: #1a202c; /* gold needs dark text to pass contrast */
-
-  --destructive: #c53030;
+  --background: var(--bg);
+  --foreground: var(--fg);
+  --card: var(--panel);
+  --card-foreground: var(--fg);
+  --popover: var(--panel);
+  --popover-foreground: var(--fg);
+  --primary: var(--accent);
+  --primary-foreground: #0a0a0a;
+  --secondary: var(--panel-hover);
+  --secondary-foreground: var(--fg);
+  --muted-foreground: var(--muted);
+  --accent-foreground: #0a0a0a;
+  --destructive: var(--down);
   --destructive-foreground: #ffffff;
-
-  --border: #e2ded4; /* warm, to sit on cream rather than fight it */
-  --input: #e2ded4;
-  --ring: var(--navy-700);
-
-  /* Game semantics — the quiz loop reads these, not the scales. */
-  --correct: #2f855a;
-  --correct-foreground: #ffffff;
-  --wrong: #c53030;
-  --wrong-foreground: #ffffff;
-  --xp: var(--gold-400);
-  --streak: var(--gold-400);
-  --combo: var(--gold-500);
+  --input: var(--border);
+  --ring: var(--accent);
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   Semantic tokens — dark. Navy becomes the ground, so gold takes over as primary
-   (navy-on-navy is invisible).
-   ───────────────────────────────────────────────────────────────────────────── */
-.dark {
-  --background: #0e1b2c;
-  --foreground: #edf2f7;
-
-  --card: #16263c;
-  --card-foreground: #edf2f7;
-  --popover: #16263c;
-  --popover-foreground: #edf2f7;
-
-  --primary: var(--gold-400);
-  --primary-foreground: var(--navy-900);
-  --secondary: var(--navy-700);
-  --secondary-foreground: #edf2f7;
-
-  --muted: #1b2e47;
-  --muted-foreground: #9aaac0;
-
-  --accent: var(--gold-400);
-  --accent-foreground: var(--navy-900);
-
-  --destructive: #e05252;
-  --destructive-foreground: #ffffff;
-
-  --border: #24384f;
-  --input: #24384f;
-  --ring: var(--gold-400);
-
-  --correct: #38a169;
-  --correct-foreground: #ffffff;
-  --wrong: #e05252;
-  --wrong-foreground: #ffffff;
-  --xp: var(--gold-300);
-  --streak: var(--gold-300);
-  --combo: var(--gold-200);
-}
-
-/* ─────────────────────────────────────────────────────────────────────────────
-   Expose tokens to Tailwind utilities: bg-primary, text-correct, border-border…
-   ───────────────────────────────────────────────────────────────────────────── */
 @theme inline {
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-panel-hover: var(--panel-hover);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-locked: var(--locked);
+
+  --color-accent: var(--accent);
+  --color-accent-dim: var(--accent-dim);
+  --color-accent-edge: var(--accent-edge);
+
+  --color-bar: var(--bar);
+  --color-up: var(--up);
+  --color-down: var(--down);
+  --color-up-dim: var(--up-dim);
+  --color-down-dim: var(--down-dim);
+
+  /* shadcn aliases */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
   --color-ring: var(--ring);
 
-  --color-correct: var(--correct);
-  --color-correct-foreground: var(--correct-foreground);
-  --color-wrong: var(--wrong);
-  --color-wrong-foreground: var(--wrong-foreground);
-  --color-xp: var(--xp);
-  --color-streak: var(--streak);
-  --color-combo: var(--combo);
+  --radius-sm: 1px;
+  --radius-md: var(--radius);
+  --radius-lg: 4px;
 
-  --color-navy-50: var(--navy-50);
-  --color-navy-100: var(--navy-100);
-  --color-navy-200: var(--navy-200);
-  --color-navy-300: var(--navy-300);
-  --color-navy-400: var(--navy-400);
-  --color-navy-500: var(--navy-500);
-  --color-navy-600: var(--navy-600);
-  --color-navy-700: var(--navy-700);
-  --color-navy-800: var(--navy-800);
-  --color-navy-900: var(--navy-900);
-  --color-gold-100: var(--gold-100);
-  --color-gold-200: var(--gold-200);
-  --color-gold-300: var(--gold-300);
-  --color-gold-400: var(--gold-400);
-  --color-gold-500: var(--gold-500);
-  --color-gold-600: var(--gold-600);
-
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 @layer base {
   * {
     border-color: var(--color-border);
   }
+
+  html {
+    color-scheme: dark;
+  }
+
   body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-size: 13px;
     -webkit-font-smoothing: antialiased;
+  }
+
+  /* Every number in this app is read in a column against another number. */
+  .tnum,
+  .font-mono {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  /* The one repeated structure: a hairline-bordered, near-square surface.
+     No shadows anywhere — a terminal has no depth. */
+  .panel {
+    background-color: var(--color-panel);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+  }
+
+  /* Small uppercase section label. The brief asks for these; they are the only
+     place all-caps is used. */
+  .label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+}
+
+/* Focus ring. Deliberately NOT inside @layer base: layered rules lose to the
+   browser's own focus styling here, which rendered a grey ring instead of the
+   accent. Unlayered keeps it orange, which is the whole point of having one. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* The one page-load animation: in-progress rings draw themselves once. Everything
+   else on the dashboard holds still. */
+@keyframes roadmap-ring-draw {
+  from {
+    stroke-dashoffset: 120;
+  }
+  to {
+    stroke-dashoffset: var(--ring);
+  }
+}
+
+.roadmap-ring {
+  stroke-dashoffset: var(--ring);
+  animation: roadmap-ring-draw 900ms cubic-bezier(0.22, 1, 0.36, 1) 150ms both;
+}
+
+/* Ticker tape. The track holds two copies of the list, so translating by -50%
+   loops seamlessly. */
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-track {
+  animation: ticker-scroll 42s linear infinite;
+}
+
+.ticker-viewport:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Don't speed the tape up to a blur — stop it and let people scroll it. */
+  .ticker-track {
+    animation: none !important;
+  }
+
+  .ticker-viewport {
+    overflow-x: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
