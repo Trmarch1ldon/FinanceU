@@ -9,13 +9,12 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
 
 ## Now
 
-- **Task:** U1a (dashboard — Bloomberg-terminal home)
-- **Branch:** `feat/dashboard`
+- **Task:** U1a (dashboard) — in review
+- **Branch:** `feat/dashboard`, pushed
 - **Claimed paths:** `src/app/globals.css`, `src/app/layout.tsx`, `src/app/page.tsx`,
   `src/components/shell/**`, `src/components/dashboard/**`, `src/data/mock/**`,
-  `src/app/{leaderboard,friends,settings,profile}/**`, and removing the old `src/app/dashboard/` stub
-- **Started:** 2026-09-30T16:06Z
-- **State:** claimed, starting now
+  `src/data/ranks.ts`, `src/types/dashboard.ts`, the new nav routes
+- **State:** built and verified, PR open. Still mine until it merges.
 
 ## Next
 
@@ -83,6 +82,12 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
   `*.md` back to the formatter.
 
 ## Done (newest first)
+
+- 2026-09-30 — U1a dashboard built (PR on `feat/dashboard`). Terminal shell + sidebar, ticker, stat
+  cards, skill roadmap, accuracy bars, activity heatmap, friends leaderboard. New palette in
+  `globals.css`, IBM Plex fonts in `layout.tsx`, mock data in `data/mock/**`, placeholder pages for
+  leaderboard/friends/settings/profile. Did not touch `types/question.ts`, `types/progress.ts`,
+  `features/game-modes/**`, `lib/engine/**`, `data/questions/**` — all still yours.
 
 - 2026-09-29 — F1 scaffold (direct to `main`, bootstrap). Added `package.json`, `tsconfig.json`,
   `next.config.ts`, `postcss.config.mjs`, `eslint.config.mjs`, `components.json`, the navy/gold

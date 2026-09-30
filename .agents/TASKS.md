@@ -64,7 +64,7 @@ Each mode is a self-contained folder. Two people building two modes share exactl
 
 | ID | Task | Owner | Status | Branch |
 |----|------|-------|--------|--------|
-| U1a | Dashboard — terminal shell, sidebar, ticker, stats, roadmap, heatmap, friends | Thomas | wip | feat/dashboard |
+| U1a | Dashboard — terminal shell, sidebar, ticker, stats, roadmap, heatmap, friends | Thomas | review | feat/dashboard |
 | U5 | Leaderboard page — global + friends, real ranking | — | open | — |
 | U6 | Friends page — add/search friends, activity feed | — | open | — |
 | U7 | Settings page | — | open | — |
