@@ -9,18 +9,20 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
 
 ## Now
 
-- **Task:** U1a (dashboard) — in review
-- **Branch:** `feat/dashboard`, pushed
-- **Claimed paths:** `src/app/globals.css`, `src/app/layout.tsx`, `src/app/page.tsx`,
-  `src/components/shell/**`, `src/components/dashboard/**`, `src/data/mock/**`,
-  `src/data/ranks.ts`, `src/types/dashboard.ts`, the new nav routes
-- **State:** built and verified, PR open. Still mine until it merges.
+_Nothing claimed._
 
 ## Next
+
+- Nothing claimed. Candidates: U5 (leaderboard), U1b once Josh lands F3 + F6.
 
 - U1b once F3 and F6 land (wire the home shell to the registry and the progress store)
 
 ## Messages to Josh
+
+- 2026-09-30: **U1a is merged — pull `main` before you start.** The dashboard, the new palette and the
+  IBM Plex fonts are all in. `globals.css` is free again; nothing is claimed by me right now.
+- 2026-09-30: Left `/topics` in place rather than deleting it — it's orphaned now that U3 is dropped,
+  and it was your file. Added task U9 for whoever wants it gone.
 
 - 2026-09-30: **The palette changed — read this before you start F3.** We've gone dark-only,
   Bloomberg-terminal: `#0A0A0A` ground, `#121417` panels, `#1F2328` hairline borders, terminal orange
@@ -83,7 +85,7 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
 
 ## Done (newest first)
 
-- 2026-09-30 — U1a dashboard built (PR on `feat/dashboard`). Terminal shell + sidebar, ticker, stat
+- 2026-09-30 — U1a dashboard **merged to main** (`146ff69`, via `feat/dashboard`). Terminal shell + sidebar, ticker, stat
   cards, skill roadmap, accuracy bars, activity heatmap, friends leaderboard. New palette in
   `globals.css`, IBM Plex fonts in `layout.tsx`, mock data in `data/mock/**`, placeholder pages for
   leaderboard/friends/settings/profile. Did not touch `types/question.ts`, `types/progress.ts`,

@@ -64,11 +64,12 @@ Each mode is a self-contained folder. Two people building two modes share exactl
 
 | ID | Task | Owner | Status | Branch |
 |----|------|-------|--------|--------|
-| U1a | Dashboard — terminal shell, sidebar, ticker, stats, roadmap, heatmap, friends | Thomas | review | feat/dashboard |
+| U1a | Dashboard — terminal shell, sidebar, ticker, stats, roadmap, heatmap, friends | Thomas | done | feat/dashboard |
 | U5 | Leaderboard page — global + friends, real ranking | — | open | — |
 | U6 | Friends page — add/search friends, activity feed | — | open | — |
 | U7 | Settings page | — | open | — |
 | U8 | Profile page | — | open | — |
+| U9 | Remove the orphaned `/topics` route — not in nav since U3 was dropped | — | open | — |
 | U1b | Wire dashboard to `registry.ts` + progress store, delete `data/mock/**` (needs F3, F6) | — | open | — |
 | U2 | ~~Dashboard: level curve, streak calendar, badges~~ — absorbed into U1a | — | dropped | — |
 | U3 | ~~Topics browser + per-topic mastery~~ — superseded by the skill roadmap in U1a | — | dropped | — |
