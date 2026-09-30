@@ -9,18 +9,36 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
 
 ## Now
 
-- **Task:** U1a (home shell)
-- **Branch:** `feat/home-shell` — claimed, not created yet
-- **Claimed paths:** `src/app/page.tsx`, `src/app/layout.tsx`
-- **Started:** 2026-09-30T00:54Z
-- **State:** claimed only, nothing written. The current `page.tsx` is a throwaway placeholder that
-  renders the palette — U1a replaces it wholesale.
+- **Task:** U1a (dashboard — Bloomberg-terminal home)
+- **Branch:** `feat/dashboard`
+- **Claimed paths:** `src/app/globals.css`, `src/app/layout.tsx`, `src/app/page.tsx`,
+  `src/components/shell/**`, `src/components/dashboard/**`, `src/data/mock/**`,
+  `src/app/{leaderboard,friends,settings,profile}/**`, and removing the old `src/app/dashboard/` stub
+- **Started:** 2026-09-30T16:06Z
+- **State:** claimed, starting now
 
 ## Next
 
 - U1b once F3 and F6 land (wire the home shell to the registry and the progress store)
 
 ## Messages to Josh
+
+- 2026-09-30: **The palette changed — read this before you start F3.** We've gone dark-only,
+  Bloomberg-terminal: `#0A0A0A` ground, `#121417` panels, `#1F2328` hairline borders, terminal orange
+  `#FF9F1C` accent, `#E6E6E6` text, `#9AA5B1` muted. Green `#00C076` / red `#FF4D4F` are for
+  gains/losses and right/wrong **only**. Navy and gold are gone. Tokens are in `globals.css` as before,
+  so keep using semantic classes (`bg-panel`, `text-accent`, `text-up`, `text-down`) — never hex in a
+  component.
+- 2026-09-30: Fonts are now **IBM Plex Sans + IBM Plex Mono**, not Inter. Numbers, stats and labels use
+  mono with `tabular-nums`; prose uses sans.
+- 2026-09-30: **F3 needs two extra fields in the contract** — `tick?(state)` and `isOver?(state)`.
+  Thomas's Survival redesign is a stock-survival game: your share price decays continuously while you
+  deliberate, correct answers spike it, and the run ends when you're delisted. That end condition isn't
+  `questionCount`/`timeLimitSec`/`lives`, and the decay needs a per-interval hook. Nearly free to add
+  now, painful to retrofit once four modes depend on the contract. Details in `DECISIONS.md`.
+- 2026-09-30: Board reshuffled — `U2` and `U3` are dropped (absorbed into the dashboard), `U5`–`U8`
+  added for the real leaderboard/friends/settings/profile pages. `F3`/`F4` are still yours and
+  untouched.
 
 - 2026-09-29: Identity resolution knows your git username is **Jfurts** — `npm run agents` will say
   "you are Josh". If you ever see it fail to tell, run `./scripts/agents.sh josh` or set

@@ -121,3 +121,35 @@ hook is version-controlled and both people get it, with no husky or lint-staged 
 
 Escape hatch is `git commit --no-verify`. The scaffold's own bootstrap commit needed it, since by
 definition it puts app code on `main`.
+
+### 2026-09-30 — Palette replaced: Bloomberg terminal, dark only
+
+Supersedes "Palette: navy & gold on cream" (2026-09-29). The product is for students breaking into
+finance, and the register that fits is a trading terminal, not a friendly learning app.
+
+`--bg #0A0A0A` · `--panel #121417` · `--border #1F2328` · `--accent #FF9F1C` (terminal orange) ·
+`--fg #E6E6E6` · `--muted #9AA5B1` · `--up #00C076` · `--down #FF4D4F`.
+
+Rules: orange is scarce — active nav, in-progress, focus, nothing else. Green and red mean value only
+(gains/losses, right/wrong), never decoration, and always paired with ▲▼ or an icon so colour is never
+the sole signal. Panels are hairline-bordered and near-square (2px), no shadows.
+
+Type is **IBM Plex Sans + IBM Plex Mono**, replacing Inter. Numbers, stats and labels are mono with
+`tabular-nums` so columns align and digits don't jitter; prose is sans.
+
+Dark-only for now. There is no light theme and no toggle — don't add `.dark` variants.
+
+### 2026-09-30 — Survival is a stock-survival game
+
+You are a company with a ticker and a share price. Rapid-fire questions; the price **decays
+continuously while you deliberate**, a correct answer spikes it (scaled by speed and difficulty), a
+wrong answer drops it hard, and consecutive correct answers rally a multiplier. The run ends at the
+delisting threshold. Score is time survived plus peak market cap.
+
+The point: time pressure becomes continuous rather than a countdown, and the score *is* the pressure —
+one number, always moving, always visible. It also makes the terminal styling load-bearing rather than
+decorative.
+
+**Consequence for `F3`:** `GameModeDefinition` needs `tick?(state)` and `isOver?(state)`. This mode ends
+on a mode-owned threshold, not on `questionCount`, `timeLimitSec` or `lives`, and the decay needs a
+per-interval hook. Add them before four modes depend on the contract.

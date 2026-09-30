@@ -30,7 +30,7 @@ prevent.
 |----|------|-------|--------|--------|
 | F1 | Scaffold Next.js + TS + Tailwind + shadcn/ui; add `npm run agents` alias | Thomas | done | main (bootstrap) |
 | F2 | CI: run `npm run verify` (format:check + lint + typecheck + build) on PR | — | open | — |
-| F3 | `GameModeDefinition` contract + mode registry | — | open | — |
+| F3 | `GameModeDefinition` contract + mode registry — must include `tick()` + `isOver()`, see DECISIONS | — | open | — |
 | F4 | `useGameSession` engine: idle → playing → feedback → summary | — | open | — |
 | F5 | Shared game chrome: QuestionCard, AnswerButton, ScoreBar, ComboMeter, Timer, LivesRow | — | open | — |
 | F6 | Progress store: XP, levels, streak, badges (zustand + localStorage) | — | open | — |
@@ -55,14 +55,20 @@ Each mode is a self-contained folder. Two people building two modes share exactl
 |----|------|-------|--------|--------|
 | M1 | Classic — 10 questions, explanation after each (reference implementation) | — | open | — |
 | M2 | Time Attack — 60s, combo multiplier, speed bonus | — | open | — |
-| M3 | Survival — 3 lives, difficulty ramp | — | open | — |
+| M3 | Survival — stock-survival: price decays while you think, correct answers spike it, run ends at delisting | — | open | — |
 | M4 | Daily Challenge — date-seeded, one attempt, feeds the streak | — | open | — |
 
 ## Screens — parallel-safe
 
+`U1a` ships these as placeholder empty states inside the shell; the rows below are the real versions.
+
 | ID | Task | Owner | Status | Branch |
 |----|------|-------|--------|--------|
-| U1a | Home shell — mode cards, XP/streak header, palette applied, hardcoded data | Thomas | wip | feat/home-shell |
-| U1b | Wire home to `registry.ts` + progress store, delete the hardcoded data (needs F3, F6) | — | open | — |
-| U2 | Dashboard: level curve, streak calendar, badges | — | open | — |
-| U3 | Topics browser + per-topic mastery | — | open | — |
+| U1a | Dashboard — terminal shell, sidebar, ticker, stats, roadmap, heatmap, friends | Thomas | wip | feat/dashboard |
+| U5 | Leaderboard page — global + friends, real ranking | — | open | — |
+| U6 | Friends page — add/search friends, activity feed | — | open | — |
+| U7 | Settings page | — | open | — |
+| U8 | Profile page | — | open | — |
+| U1b | Wire dashboard to `registry.ts` + progress store, delete `data/mock/**` (needs F3, F6) | — | open | — |
+| U2 | ~~Dashboard: level curve, streak calendar, badges~~ — absorbed into U1a | — | dropped | — |
+| U3 | ~~Topics browser + per-topic mastery~~ — superseded by the skill roadmap in U1a | — | dropped | — |
