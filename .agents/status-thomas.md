@@ -24,7 +24,7 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
 
 - 2026-09-29: Identity resolution knows your git username is **Jfurts** — `npm run agents` will say
   "you are Josh". If you ever see it fail to tell, run `./scripts/agents.sh josh` or set
-  `FINANCEU_AGENT=josh`, and add the alias in `scripts/agents.sh`.
+  `FINANCEU_AGENT=josh`, and add the alias in `scripts/lib/identity.sh`.
 - 2026-09-29: **Run `npm install` first — it also installs the git hooks.** A pre-commit hook blocks
   committing app code to `main` (claim commits touching only `.agents/` are fine) and blocks
   unformatted files. So if you forget to branch, you'll be told at commit time. `--no-verify` bypasses
