@@ -37,13 +37,8 @@ export function ActivityHeatmap({ days }: ActivityHeatmapProps) {
                 <span
                   key={day.date}
                   title={`${day.date}: ${day.count} question${day.count === 1 ? "" : "s"}`}
-                  className="cell-in size-[11px] rounded-[2px]"
-                  style={{
-                    backgroundColor: LEVEL_FILL[day.level],
-                    // By column, not by cell — 12 steps reads as a feed loading,
-                    // 84 would read as confetti.
-                    animationDelay: `${weekIndex * 22}ms`,
-                  }}
+                  className="size-[11px] rounded-[2px]"
+                  style={{ backgroundColor: LEVEL_FILL[day.level] }}
                 />
               ))}
             </div>

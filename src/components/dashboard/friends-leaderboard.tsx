@@ -1,8 +1,6 @@
 import { cn } from "@/lib/utils";
 import type { Friend } from "@/types/dashboard";
 
-import { CountedValue } from "./counted-value";
-
 type FriendsLeaderboardProps = {
   friends: Friend[];
   /** Highlighted as "you" in the standings. */
@@ -40,12 +38,9 @@ export function FriendsLeaderboard({ friends, currentHandle }: FriendsLeaderboar
               {friend.name}
               {isYou && <span className="ml-1.5 font-mono text-[10px] text-accent/70">YOU</span>}
             </span>
-            <CountedValue
-              value={friend.weeklyXp}
-              // Standings resolve top-down, so the leader settles first.
-              delayMs={index * 70}
-              className="font-mono text-[12px] text-fg"
-            />
+            <span className="font-mono text-[12px] text-fg tabular-nums">
+              {friend.weeklyXp.toLocaleString()}
+            </span>
             <span className={cn("font-mono text-[11px] tabular-nums", move.className)}>
               <span aria-hidden>{GLYPH[move.key]}</span>
               <span className="sr-only">

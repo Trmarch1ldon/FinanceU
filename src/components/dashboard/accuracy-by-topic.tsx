@@ -12,7 +12,7 @@ export function AccuracyByTopic({ topics }: AccuracyByTopicProps) {
 
   return (
     <ul className="space-y-3">
-      {sorted.map((topic, index) => (
+      {sorted.map((topic) => (
         <li key={topic.id} className="grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1.5">
           <span className="truncate text-[12px] text-fg">{topic.name}</span>
           <span className="font-mono text-[12px] text-fg tabular-nums">{topic.accuracy}%</span>
@@ -20,8 +20,8 @@ export function AccuracyByTopic({ topics }: AccuracyByTopicProps) {
           <div className="col-span-2 flex items-center gap-3">
             <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-border">
               <div
-                className="bar-grow h-full rounded-full bg-bar"
-                style={{ width: `${topic.accuracy}%`, animationDelay: `${index * 60}ms` }}
+                className="h-full rounded-full bg-bar"
+                style={{ width: `${topic.accuracy}%` }}
                 role="img"
                 aria-label={`${topic.name}: ${topic.accuracy} percent accuracy over ${topic.answered} questions`}
               />
