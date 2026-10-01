@@ -15,11 +15,11 @@ import {
 
 import { mockUser } from "@/data/mock/user";
 
-import { NavItem } from "./nav-item";
+import { NavList, type NavEntry } from "./nav-list";
 import { RankBadge } from "./rank-badge";
 import { UserChip } from "./user-chip";
 
-const NAV = [
+const NAV: NavEntry[] = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/play/classic", label: "Classic", icon: ListChecks },
   { href: "/play/time-attack", label: "Time Attack", icon: Timer },
@@ -28,6 +28,8 @@ const NAV = [
   { href: "/leaderboard", label: "Leaderboard", icon: Trophy },
   { href: "/friends", label: "Friends", icon: Users },
 ];
+
+const SETTINGS_NAV: NavEntry[] = [{ href: "/settings", label: "Settings", icon: Settings }];
 
 type SidebarProps = {
   collapsed: boolean;
@@ -41,6 +43,12 @@ export function Sidebar({ collapsed, onToggle, onNavigate }: SidebarProps) {
       <div className="flex items-center justify-between gap-2 border-b border-border px-3 py-3 collapsed:px-2">
         <span className="font-mono text-[13px] tracking-[0.14em] text-fg collapsed:hidden">
           FINANCE<span className="text-accent">U</span>
+          <span
+            aria-hidden
+            className="cursor-blink ml-1 inline-block w-[7px] translate-y-px bg-accent align-middle text-transparent"
+          >
+            &nbsp;
+          </span>
         </span>
         <button
           type="button"
@@ -62,18 +70,12 @@ export function Sidebar({ collapsed, onToggle, onNavigate }: SidebarProps) {
         <RankBadge xp={mockUser.xp} />
       </div>
 
-      <nav aria-label="Main" className="min-h-0 flex-1 overflow-y-auto px-2 pb-3">
-        <ul className="space-y-0.5">
-          {NAV.map((item) => (
-            <NavItem key={item.href} {...item} onNavigate={onNavigate} />
-          ))}
-        </ul>
+      <nav className="min-h-0 flex-1 overflow-y-auto px-2 pb-3">
+        <NavList items={NAV} ariaLabel="Main" onNavigate={onNavigate} />
       </nav>
 
       <div className="border-t border-border px-2 py-2">
-        <ul>
-          <NavItem href="/settings" label="Settings" icon={Settings} onNavigate={onNavigate} />
-        </ul>
+        <NavList items={SETTINGS_NAV} ariaLabel="Settings" onNavigate={onNavigate} />
       </div>
     </div>
   );

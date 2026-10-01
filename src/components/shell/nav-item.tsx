@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import type { LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -10,15 +9,15 @@ type NavItemProps = {
   href: string;
   label: string;
   icon: LucideIcon;
+  active: boolean;
   onNavigate?: () => void;
 };
 
-export function NavItem({ href, label, icon: Icon, onNavigate }: NavItemProps) {
-  const pathname = usePathname();
-  const active = href === "/" ? pathname === "/" : pathname.startsWith(href);
-
+/** One nav row. The active marker is NOT here — NavList owns a single marker that
+ *  travels between rows, so clicking one visibly moves the selection. */
+export function NavItem({ href, label, icon: Icon, active, onNavigate }: NavItemProps) {
   return (
-    <li className="group/item relative">
+    <li className="group/item relative" data-active={active ? "true" : undefined}>
       <Link
         href={href}
         onClick={onNavigate}
@@ -29,14 +28,6 @@ export function NavItem({ href, label, icon: Icon, onNavigate }: NavItemProps) {
           active ? "bg-accent-dim text-accent" : "text-muted hover:bg-panel-hover hover:text-fg",
         )}
       >
-        {/* Active marker is a rail, not a fill — reads as a terminal selection. */}
-        <span
-          aria-hidden
-          className={cn(
-            "absolute top-1 bottom-1 left-0 w-0.5 rounded-full transition-colors",
-            active ? "bg-accent" : "bg-transparent",
-          )}
-        />
         <Icon size={16} strokeWidth={1.75} className="shrink-0" aria-hidden />
         <span className="truncate text-[13px] whitespace-nowrap collapsed:hidden">{label}</span>
       </Link>

@@ -37,7 +37,7 @@ export function SkillRoadmap({ nodes }: SkillRoadmapProps) {
         />
         <div
           aria-hidden
-          className="absolute top-[21px] h-0.5 bg-accent"
+          className="rail-draw absolute top-[21px] h-0.5 bg-accent"
           style={{
             left: `${halfColumn}%`,
             width: `calc((100% - ${halfColumn * 2}%) * ${filled / 100})`,
@@ -48,8 +48,14 @@ export function SkillRoadmap({ nodes }: SkillRoadmapProps) {
           className="relative grid"
           style={{ gridTemplateColumns: `repeat(${nodes.length}, 1fr)` }}
         >
-          {nodes.map((node) => (
-            <RoadmapNodeMark key={node.id} node={node} onSelect={handleSelect} />
+          {nodes.map((node, index) => (
+            <RoadmapNodeMark
+              key={node.id}
+              node={node}
+              onSelect={handleSelect}
+              // Nodes land behind the rail as it reaches them.
+              landDelayMs={180 + index * 70}
+            />
           ))}
         </ol>
       </div>

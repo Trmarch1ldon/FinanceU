@@ -2,7 +2,9 @@ import { cn } from "@/lib/utils";
 
 type StatCardProps = {
   label: string;
-  value: string;
+  /** A node, not a string, so the caller can drop in a <CountedValue> without making
+   *  this whole card a client component. */
+  value: React.ReactNode;
   /** Secondary line: context, not decoration. */
   note?: string;
   trend?: "up" | "down" | "flat";

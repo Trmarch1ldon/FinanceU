@@ -8,12 +8,13 @@ import type { RoadmapNode } from "@/types/dashboard";
 type RoadmapNodeProps = {
   node: RoadmapNode;
   onSelect: (node: RoadmapNode) => void;
+  landDelayMs?: number;
 };
 
 const RADIUS = 19;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
-export function RoadmapNodeMark({ node, onSelect }: RoadmapNodeProps) {
+export function RoadmapNodeMark({ node, onSelect, landDelayMs = 0 }: RoadmapNodeProps) {
   const locked = node.state === "locked";
   const inProgress = node.state === "in-progress";
 
@@ -24,7 +25,10 @@ export function RoadmapNodeMark({ node, onSelect }: RoadmapNodeProps) {
       : `${node.name}, completed`;
 
   return (
-    <li className="flex min-w-0 flex-col items-center gap-2">
+    <li
+      className="node-land flex min-w-0 flex-col items-center gap-2"
+      style={{ animationDelay: `${landDelayMs}ms` }}
+    >
       <button
         type="button"
         disabled={locked}
@@ -32,10 +36,11 @@ export function RoadmapNodeMark({ node, onSelect }: RoadmapNodeProps) {
         aria-label={describe}
         title={describe}
         className={cn(
-          "relative grid size-11 shrink-0 place-items-center rounded-full border transition-colors",
+          "relative grid size-11 shrink-0 place-items-center rounded-full border",
+          "transition-[border-color,transform] duration-150",
           locked
             ? "cursor-not-allowed border-border bg-panel text-locked"
-            : "border-transparent bg-panel hover:border-accent-edge",
+            : "border-transparent bg-panel hover:-translate-y-px hover:border-accent",
         )}
       >
         {inProgress && (
