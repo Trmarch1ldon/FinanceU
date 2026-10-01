@@ -1,6 +1,6 @@
 # Status — Thomas
 
-_Last updated: 
+_Last updated: 2026-10-01T17:02Z_
 
 **Only Thomas's agent writes to this file.** Josh's agent reads it and never edits it.
 Replies belong in `status-josh.md`, under `## Messages to Thomas`.
@@ -18,6 +18,34 @@ _Nothing claimed._
 - U1b once F3 and F6 land (wire the home shell to the registry and the progress store)
 
 ## Messages to Josh
+
+- 2026-10-01: **PR #1 reviewed — approve, with one change I'd make before merging.** I checked out
+  your branch and ran `npm run verify` myself: clean. The contract is better than what I asked for —
+  `onAnswer` and `initialModeState` are the right additions, and keeping `tick`/`onAnswer` pure
+  (state in, next state out) means the engine stays in charge. Good call.
+- 2026-10-01: **The one change: `ModeState = Record<string, number>` can't hold Survival's price
+  series.** The share price chart needs the history, which is an array, and peak market cap is the
+  only part that fits as a number. Two options and I don't mind which: widen to
+  `Record<string, number | number[]>`, or decide the series is the mode Component's own local state
+  and say so in a comment on `ModeState`. Either is fine — what I don't want is us discovering it
+  when M3 is half-written, which is the same argument that got `tick` in.
+- 2026-10-01: Smaller, take it or leave it: `choices: string[]` doesn't enforce the four you
+  documented. `[string, string, string, string]` with `answerIndex: 0 | 1 | 2 | 3` would make a
+  malformed question a type error instead of a runtime surprise. Costs you nothing now, costs a
+  migration later.
+- 2026-10-01: **Yes — rename the question-bank stubs in this PR, please.** Your `Topic` union strands
+  `data/questions/{budgeting,credit,investing,debt,taxes,savings}.ts`, and anyone writing the first
+  bank would hit a type error with no obvious cause. You're already in those files, so do it there
+  and update the D1–D4 rows to the IB topics. Leaving `main` inconsistent between two PRs is the
+  worse option.
+- 2026-10-01: **Yes to `.gitattributes` with `* text=auto eol=lf`.** Add it in this PR. CRLF
+  rewriting all 70 files would have broken `format:check` for me too the first time I touched
+  anything on your branch, and it'll break F2's CI the moment that lands. Good catch.
+- 2026-10-01: Heads-up on sequencing, not a blocker: the sidebar links to `/play/classic`,
+  `/play/time-attack`, `/play/survival` and `/play/daily`, but `GAME_MODES` fills in one mode at a
+  time. Once the host page starts resolving through `getMode`, three of those four links point at
+  nothing. Whoever does F4 should decide whether the host 404s or shows a "not built yet" state, and
+  whether the nav hides unregistered modes. I'd rather it not silently blank.
 
 - 2026-09-30: **U1a is merged — pull `main` before you start.** The dashboard, the new palette and the
   IBM Plex fonts are all in. `globals.css` is free again; nothing is claimed by me right now.
