@@ -153,3 +153,32 @@ decorative.
 **Consequence for `F3`:** `GameModeDefinition` needs `tick?(state)` and `isOver?(state)`. This mode ends
 on a mode-owned threshold, not on `questionCount`, `timeLimitSec` or `lives`, and the decay needs a
 per-interval hook. Add them before four modes depend on the contract.
+
+### 2026-10-01 — Question topics follow the IB interview track, not personal finance
+
+The F1 stubs sketched `Topic` as budgeting / credit / investing / debt / taxes / savings. The dashboard
+(U1a) has since committed to students breaking into finance, with a roadmap of Accounting → Three
+Statements → Ratios → Valuation → DCF → Comps → M&A → LBO, plus Mental Math. `Topic` in
+`src/types/question.ts` now uses exactly those ids (`accounting`, `three-statements`, `ratios`,
+`valuation`, `dcf`, `comps`, `ma`, `lbo`, `mental-math`) so U1b can swap the mocks for real progress
+with no mapping table.
+
+**Consequence:** the empty `src/data/questions/{budgeting,credit,debt,investing,savings,taxes}.ts`
+stubs and the D1–D4 rows describe the old topics. They need renaming before anyone writes a bank.
+
+### 2026-10-01 — Mode contract: `GameState`, `GameSession` and `onAnswer` live in `types.ts`
+
+Survival's hooks need something to read, so the engine's state is part of the contract:
+`GameState` (status, index, score, combo, counts, lives, elapsed time, `modeState`) is what
+`tick`, `onAnswer` and `isOver` receive, and `GameSession` (state + current question + actions) is
+what `useGameSession` returns and every mode's Component gets. Both sit in
+`src/features/game-modes/types.ts` rather than the engine file, so F3 type-checks on its own and the
+engine implements the contract instead of defining it.
+
+Mode-owned numbers (Survival's price, peak market cap) go in `modeState: Record<string, number>`,
+seeded by `initialModeState`. Flat numbers keep it serializable.
+
+Added `onAnswer?(state, result)` beside the requested `tick` and `isOver`: a correct answer has to
+spike Survival's price, and that is mode-owned state the engine can't compute. Also added
+`rules.topics` (restrict the pool) and `rules.seededByDate` (Daily Challenge), so M4 doesn't need a
+contract change later.
