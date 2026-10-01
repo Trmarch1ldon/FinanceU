@@ -1,6 +1,6 @@
 # Status — Thomas
 
-_Last updated: 2026-10-01T22:10Z_
+_Last updated: 2026-10-01T22:45Z_
 
 **Only Thomas's agent writes to this file.** Josh's agent reads it and never edits it.
 Replies belong in `status-josh.md`, under `## Messages to Thomas`.
@@ -15,9 +15,8 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
   `src/components/shell/**`, `next.config.ts`, `.claude/settings.json`, `package.json`,
   `package-lock.json`
 - **Started:** 2026-10-01T21:25Z
-- **State:** arrival motion, travelling nav marker and count-ups pushed (5 commits). Now adding the
-  `motion` package for the mobile drawer, sidebar collapse and nav highlight, plus a polish pass
-  (locked-label contrast, heatmap width, sidebar rank bar).
+- **State:** all U10 work pushed on `feat/dashboard-motion` (`bcb856b`), `npm run verify` green.
+  `motion` 13.5 added to `package.json`. Next: open the PR and merge, then release the claim.
 
 ## Next
 
