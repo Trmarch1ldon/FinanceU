@@ -26,7 +26,7 @@ type Options = {
  * 3. **Once.** Navigating back to the dashboard shouldn't replay the whole arrival, so the
  *    animation is keyed to mount, not to `target` changing.
  */
-export function useCountUp(target: number, { durationMs = 700, delayMs = 0 }: Options = {}) {
+export function useCountUp(target: number, { durationMs = 1000, delayMs = 0 }: Options = {}) {
   const [value, setValue] = useState(target);
   const frame = useRef<number | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);

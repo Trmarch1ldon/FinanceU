@@ -48,8 +48,14 @@ export function SkillRoadmap({ nodes }: SkillRoadmapProps) {
           className="relative grid"
           style={{ gridTemplateColumns: `repeat(${nodes.length}, 1fr)` }}
         >
-          {nodes.map((node) => (
-            <RoadmapNodeMark key={node.id} node={node} onSelect={handleSelect} />
+          {nodes.map((node, index) => (
+            <RoadmapNodeMark
+              key={node.id}
+              node={node}
+              onSelect={handleSelect}
+              // Nodes land behind the rail as it reaches them.
+              landDelayMs={240 + index * 95}
+            />
           ))}
         </ol>
       </div>

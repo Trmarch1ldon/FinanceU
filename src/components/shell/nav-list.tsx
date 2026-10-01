@@ -74,7 +74,7 @@ export function NavList({ items, ariaLabel, onNavigate }: NavListProps) {
       <span
         ref={markerRef}
         aria-hidden
-        className="absolute left-0 w-0.5 rounded-full bg-accent opacity-0 transition-[transform,height] duration-[220ms] ease-out"
+        className="absolute left-0 w-0.5 rounded-full bg-accent opacity-0 transition-[transform,height] duration-[280ms] ease-out"
       />
       <ul
         ref={listRef}

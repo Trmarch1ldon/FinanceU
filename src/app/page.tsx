@@ -32,15 +32,12 @@ export default function DashboardPage() {
         />
         <StatCard
           label="Current Streak"
-          value={<CountedValue value={user.streakDays} delayMs={60} />}
+          value={<CountedValue value={user.streakDays} delayMs={120} />}
           note="days — personal best is 18"
         />
         <StatCard
           label="Accuracy"
-          // Not counted, same reason as Rank: an intermediate "0.0%" reads as a real
-          // (and wrong) value. XP and streak genuinely accumulate from zero; accuracy
-          // and rank don't.
-          value={`${user.accuracy}%`}
+          value={<CountedValue value={user.accuracy} decimals={1} suffix="%" delayMs={240} />}
           note="1.2 points this week"
           trend="up"
         />

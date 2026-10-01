@@ -170,11 +170,44 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   Arrival — deliberately small. An earlier pass animated the heatmap's 84 cells,
-   five accuracy bars, eight roadmap nodes and every friend's XP; together that
-   read as noise. What survives is the hero (the roadmap rail and ring), the
-   sparkline, and the stat values. Everything else renders at rest.
+   Arrival. The page doesn't slide in — it connects and populates. Every keyframe
+   below animates transform or opacity only, so nothing reflows mid-arrival.
+
+   Timings are deliberately unhurried: the first pass was the same sequence at
+   roughly two-thirds these durations and read as frantic rather than busy. Total
+   arrival is about 1.4s.
    ───────────────────────────────────────────────────────────────────────────── */
+
+/* Bars measure themselves. transform, not width, so the row never relayouts. */
+@keyframes bar-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.bar-grow {
+  transform-origin: left center;
+  animation: bar-grow 800ms var(--ease-arrive) both;
+}
+
+/* Heatmap cells land column by column, like history streaming in. */
+@keyframes cell-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.cell-in {
+  animation: cell-in 320ms var(--ease-arrive) both;
+}
 
 /* The roadmap rail draws itself before the nodes land on it. */
 @keyframes rail-draw {
@@ -188,7 +221,22 @@
 
 .rail-draw {
   transform-origin: left center;
-  animation: rail-draw 620ms var(--ease-arrive) 120ms both;
+  animation: rail-draw 900ms var(--ease-arrive) 160ms both;
+}
+
+@keyframes node-land {
+  from {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.node-land {
+  animation: node-land 420ms var(--ease-arrive) both;
 }
 
 /* Sparkline plots left to right. */
@@ -203,7 +251,23 @@
 
 .spark-draw {
   stroke-dasharray: var(--spark-len);
-  animation: spark-draw 760ms var(--ease-arrive) 160ms both;
+  animation: spark-draw 1000ms var(--ease-arrive) 220ms both;
+}
+
+/* The entire ambient budget: one cursor, next to the wordmark. */
+@keyframes cursor-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  55%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.cursor-blink {
+  animation: cursor-blink 1.5s step-end infinite;
 }
 
 /* In-progress rings draw themselves once, after the rail and nodes have landed. */
@@ -218,7 +282,7 @@
 
 .roadmap-ring {
   stroke-dashoffset: var(--ring);
-  animation: roadmap-ring-draw 900ms var(--ease-arrive) 620ms both;
+  animation: roadmap-ring-draw 1100ms var(--ease-arrive) 900ms both;
 }
 
 /* Ticker tape. The track holds two copies of the list, so translating by -50%
@@ -263,9 +327,13 @@
   /* `both` fill would otherwise leave these frozen at their "from" frame — a scaled-to-
      zero bar is not a reduced-motion bar, it's an invisible one. Drop the animation so
      every element renders at its real final value. */
+  .bar-grow,
+  .cell-in,
   .rail-draw,
+  .node-land,
   .spark-draw,
-  .roadmap-ring {
+  .roadmap-ring,
+  .cursor-blink {
     animation: none !important;
   }
 

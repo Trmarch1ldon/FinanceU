@@ -43,6 +43,12 @@ export function Sidebar({ collapsed, onToggle, onNavigate }: SidebarProps) {
       <div className="flex items-center justify-between gap-2 border-b border-border px-3 py-3 collapsed:px-2">
         <span className="font-mono text-[13px] tracking-[0.14em] text-fg collapsed:hidden">
           FINANCE<span className="text-accent">U</span>
+          <span
+            aria-hidden
+            className="cursor-blink ml-1 inline-block w-[7px] translate-y-px bg-accent align-middle text-transparent"
+          >
+            &nbsp;
+          </span>
         </span>
         <button
           type="button"

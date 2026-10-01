@@ -8,12 +8,13 @@ import type { RoadmapNode } from "@/types/dashboard";
 type RoadmapNodeProps = {
   node: RoadmapNode;
   onSelect: (node: RoadmapNode) => void;
+  landDelayMs?: number;
 };
 
 const RADIUS = 19;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
-export function RoadmapNodeMark({ node, onSelect }: RoadmapNodeProps) {
+export function RoadmapNodeMark({ node, onSelect, landDelayMs = 0 }: RoadmapNodeProps) {
   const locked = node.state === "locked";
   const inProgress = node.state === "in-progress";
 
@@ -24,7 +25,10 @@ export function RoadmapNodeMark({ node, onSelect }: RoadmapNodeProps) {
       : `${node.name}, completed`;
 
   return (
-    <li className="flex min-w-0 flex-col items-center gap-2">
+    <li
+      className="node-land flex min-w-0 flex-col items-center gap-2"
+      style={{ animationDelay: `${landDelayMs}ms` }}
+    >
       <button
         type="button"
         disabled={locked}
