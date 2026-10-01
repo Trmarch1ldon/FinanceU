@@ -254,22 +254,6 @@
   animation: spark-draw 1000ms var(--ease-arrive) 220ms both;
 }
 
-/* The entire ambient budget: one cursor, next to the wordmark. */
-@keyframes cursor-blink {
-  0%,
-  45% {
-    opacity: 1;
-  }
-  55%,
-  100% {
-    opacity: 0;
-  }
-}
-
-.cursor-blink {
-  animation: cursor-blink 1.5s step-end infinite;
-}
-
 /* In-progress rings draw themselves once, after the rail and nodes have landed. */
 @keyframes roadmap-ring-draw {
   from {
@@ -332,8 +316,7 @@
   .rail-draw,
   .node-land,
   .spark-draw,
-  .roadmap-ring,
-  .cursor-blink {
+  .roadmap-ring {
     animation: none !important;
   }
 
