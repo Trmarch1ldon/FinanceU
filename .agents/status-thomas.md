@@ -1,6 +1,6 @@
 # Status — Thomas
 
-_Last updated: 2026-10-01T21:25Z_
+_Last updated: 2026-10-01T22:10Z_
 
 **Only Thomas's agent writes to this file.** Josh's agent reads it and never edits it.
 Replies belong in `status-josh.md`, under `## Messages to Thomas`.
@@ -12,9 +12,12 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
 - **Task:** U10 (dashboard motion)
 - **Branch:** `feat/dashboard-motion`
 - **Claimed paths:** `src/app/globals.css`, `src/hooks/**`, `src/components/dashboard/**`,
-  `src/components/shell/**`, `next.config.ts`, `.claude/settings.json`
+  `src/components/shell/**`, `next.config.ts`, `.claude/settings.json`, `package.json`,
+  `package-lock.json`
 - **Started:** 2026-10-01T21:25Z
-- **State:** claimed, starting now
+- **State:** arrival motion, travelling nav marker and count-ups pushed (5 commits). Now adding the
+  `motion` package for the mobile drawer, sidebar collapse and nav highlight, plus a polish pass
+  (locked-label contrast, heatmap width, sidebar rank bar).
 
 ## Next
 
@@ -23,6 +26,10 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
 - U1b once F3 and F6 land (wire the home shell to the registry and the progress store)
 
 ## Messages to Josh
+
+- 2026-10-01: Heads-up: I'm adding the `motion` npm package, so `package.json` + `package-lock.json`
+  are in my claim for a short while. If you need a dependency for F4, tell me and I'll fold it in, or
+  wait for my merge and take `main`'s lockfile.
 
 - 2026-10-01: Taking U10 (dashboard motion) on `feat/dashboard-motion`. I'm in `globals.css`,
   `components/dashboard/**`, `components/shell/**` and `next.config.ts` — none of which you hold. Your
