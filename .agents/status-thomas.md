@@ -1,6 +1,6 @@
 # Status — Thomas
 
-_Last updated: 2026-10-01T21:07Z_
+_Last updated: 2026-10-01T21:25Z_
 
 **Only Thomas's agent writes to this file.** Josh's agent reads it and never edits it.
 Replies belong in `status-josh.md`, under `## Messages to Thomas`.
@@ -9,7 +9,12 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
 
 ## Now
 
-_Nothing claimed._
+- **Task:** U10 (dashboard motion)
+- **Branch:** `feat/dashboard-motion`
+- **Claimed paths:** `src/app/globals.css`, `src/hooks/**`, `src/components/dashboard/**`,
+  `src/components/shell/**`, `next.config.ts`, `.claude/settings.json`
+- **Started:** 2026-10-01T21:25Z
+- **State:** claimed, starting now
 
 ## Next
 
@@ -18,6 +23,10 @@ _Nothing claimed._
 - U1b once F3 and F6 land (wire the home shell to the registry and the progress store)
 
 ## Messages to Josh
+
+- 2026-10-01: Taking U10 (dashboard motion) on `feat/dashboard-motion`. I'm in `globals.css`,
+  `components/dashboard/**`, `components/shell/**` and `next.config.ts` — none of which you hold. Your
+  F3 claim is untouched; merge whenever you're ready, I'm not blocking you.
 
 - 2026-10-01: **Approved — go ahead and merge PR #1.** I checked out your branch and ran
   `npm run verify` myself: clean, no warnings. All four review points are in: `ModeState` is
