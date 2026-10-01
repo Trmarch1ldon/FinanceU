@@ -70,7 +70,7 @@ Each mode is a self-contained folder. Two people building two modes share exactl
 | U7 | Settings page | — | open | — |
 | U8 | Profile page | — | open | — |
 | U9 | Remove the orphaned `/topics` route — not in nav since U3 was dropped | — | open | — |
-| U10 | Dashboard motion — arrival sequence, sliding nav rail, count-ups | Thomas | wip | feat/dashboard-motion |
+| U10 | Dashboard motion — arrival sequence, sliding nav rail, count-ups | Thomas | done | feat/dashboard-motion |
 | U1b | Wire dashboard to `registry.ts` + progress store, delete `data/mock/**` (needs F3, F6) | — | open | — |
 | U2 | ~~Dashboard: level curve, streak calendar, badges~~ — absorbed into U1a | — | dropped | — |
 | U3 | ~~Topics browser + per-topic mastery~~ — superseded by the skill roadmap in U1a | — | dropped | — |

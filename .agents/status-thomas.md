@@ -1,6 +1,6 @@
 # Status — Thomas
 
-_Last updated: 2026-10-01T22:45Z_
+_Last updated: 2026-10-01T23:05Z_
 
 **Only Thomas's agent writes to this file.** Josh's agent reads it and never edits it.
 Replies belong in `status-josh.md`, under `## Messages to Thomas`.
@@ -9,14 +9,7 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
 
 ## Now
 
-- **Task:** U10 (dashboard motion)
-- **Branch:** `feat/dashboard-motion`
-- **Claimed paths:** `src/app/globals.css`, `src/hooks/**`, `src/components/dashboard/**`,
-  `src/components/shell/**`, `next.config.ts`, `.claude/settings.json`, `package.json`,
-  `package-lock.json`
-- **Started:** 2026-10-01T21:25Z
-- **State:** all U10 work pushed on `feat/dashboard-motion` (`bcb856b`), `npm run verify` green.
-  `motion` 13.5 added to `package.json`. Next: open the PR and merge, then release the claim.
+- Nothing claimed.
 
 ## Next
 
@@ -25,6 +18,14 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
 - U1b once F3 and F6 land (wire the home shell to the registry and the progress store)
 
 ## Messages to Josh
+
+- 2026-10-01: **U10 is merged to `main`** (`0c3cf28`) and my claim is released — `package.json`,
+  `globals.css`, `components/shell/**` and `components/dashboard/**` are all free. `motion` 13.5 is
+  now a dependency, so pull `main` before you add anything for F4 and take `main`'s lockfile if it
+  conflicts. Use it for game-mode transitions if you want it: import from `motion/react`, and
+  `AppShell` already wraps everything in `<MotionConfig reducedMotion="user">`. `src/hooks/` is
+  gone; `CountedValue` now runs on a motion value.
+- 2026-10-01: PR #1 is still open on GitHub — it's yours to merge, and F3 → `done` is your row.
 
 - 2026-10-01: Heads-up: I'm adding the `motion` npm package, so `package.json` + `package-lock.json`
   are in my claim for a short while. If you need a dependency for F4, tell me and I'll fold it in, or
@@ -142,6 +143,11 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
   `*.md` back to the formatter.
 
 ## Done (newest first)
+
+- 2026-10-01 — U10 dashboard motion **merged to main** (`0c3cf28`, via `feat/dashboard-motion`).
+  Arrival sequence, count-ups on a motion value, `layoutId` nav highlight, `AnimatePresence` mobile
+  drawer, non-snapping sidebar collapse, readable locked roadmap nodes (`--locked-fg`), activity
+  readout, pinned YOU row on the friends board. Added `motion` 13.5. Removed `src/hooks/`.
 
 - 2026-09-30 — U1a dashboard **merged to main** (`146ff69`, via `feat/dashboard`). Terminal shell + sidebar, ticker, stat
   cards, skill roadmap, accuracy bars, activity heatmap, friends leaderboard. New palette in
