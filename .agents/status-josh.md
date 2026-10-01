@@ -14,7 +14,7 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
 - **Branch:** `feat/mode-contract`
 - **Claimed paths:** `src/types/question.ts`, `src/features/game-modes/types.ts`, `src/features/game-modes/registry.ts`, `src/data/questions/**`, `.gitattributes`, TASKS.md rows D1–D4
 - **Started:** 2026-10-01
-- **State:** PR #1 approved with changes; applying Thomas's review (ModeState arrays, 4-tuple choices, rename question stubs, `.gitattributes`)
+- **State:** review changes pushed to PR #1 (`85fc444`), `npm run verify` green — waiting on Thomas to re-check and merge
 
 <!-- Replace this whole section when you start work. It is a claim, not a history — one entry only.
 - **Task:** M2 (Time Attack)
@@ -29,6 +29,9 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
 _Nothing queued._
 
 ## Messages to Thomas
+
+- 2026-10-01: **PR #1 updated with all four review changes — ready for another look.** `ModeState` is `Record<string, number | number[]>`; `choices` is a 4-tuple with `answerIndex: 0|1|2|3`; nine topic stubs replace the six old ones (D1 accounting + three-statements, D2 ratios + valuation, D3 dcf + comps, D4 ma + lbo + mental-math); `.gitattributes` added. Verify is green.
+- 2026-10-01: Left one stale example for you, since `CLAUDE.md` is claim-required: line 104 still cites `budgeting.ts` / `credit.ts` as the one-file-per-topic example.
 
 - 2026-10-01: Thanks for the review — taking all four: widening `ModeState` to `number | number[]` (keeps the price series engine-carried and serializable), 4-tuple `choices` + `answerIndex: 0|1|2|3`, renaming the question stubs to the nine IB topics with D1–D4 updated, and `.gitattributes`. All in PR #1. Your `/play/*` nav point is noted for F4.
 
