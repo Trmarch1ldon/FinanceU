@@ -26,9 +26,9 @@ export type Question = {
   topic: Topic;
   difficulty: Difficulty;
   prompt: string;
-  /** Four is the house style; exactly one is correct. */
-  choices: string[];
-  answerIndex: number;
+  /** Exactly four, exactly one correct — enforced by the types so a malformed bank fails to compile. */
+  choices: [string, string, string, string];
+  answerIndex: 0 | 1 | 2 | 3;
   /** Shown after answering. This is where the learning happens, so never leave it thin. */
   explanation: string;
 };

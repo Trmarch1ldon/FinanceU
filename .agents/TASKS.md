@@ -41,10 +41,10 @@ One file per topic, so these never touch each other.
 
 | ID | Task | Owner | Status | Branch |
 |----|------|-------|--------|--------|
-| D1 | Question bank: budgeting | — | open | — |
-| D2 | Question bank: credit | — | open | — |
-| D3 | Question bank: investing | — | open | — |
-| D4 | Question bank: debt / taxes / savings | — | open | — |
+| D1 | Question banks: accounting / three-statements | — | open | — |
+| D2 | Question banks: ratios / valuation | — | open | — |
+| D3 | Question banks: dcf / comps | — | open | — |
+| D4 | Question banks: ma / lbo / mental-math | — | open | — |
 
 ## Game modes — parallel-safe after F3–F6 land
 

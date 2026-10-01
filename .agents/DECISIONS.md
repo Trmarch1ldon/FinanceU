@@ -163,8 +163,8 @@ Statements → Ratios → Valuation → DCF → Comps → M&A → LBO, plus Ment
 `valuation`, `dcf`, `comps`, `ma`, `lbo`, `mental-math`) so U1b can swap the mocks for real progress
 with no mapping table.
 
-**Consequence:** the empty `src/data/questions/{budgeting,credit,debt,investing,savings,taxes}.ts`
-stubs and the D1–D4 rows describe the old topics. They need renaming before anyone writes a bank.
+**Consequence:** the old `src/data/questions/{budgeting,credit,debt,investing,savings,taxes}.ts` stubs
+are replaced by one stub per new topic, and D1–D4 are re-scoped to them (same PR, at Thomas's request).
 
 ### 2026-10-01 — Mode contract: `GameState`, `GameSession` and `onAnswer` live in `types.ts`
 
@@ -175,8 +175,12 @@ what `useGameSession` returns and every mode's Component gets. Both sit in
 `src/features/game-modes/types.ts` rather than the engine file, so F3 type-checks on its own and the
 engine implements the contract instead of defining it.
 
-Mode-owned numbers (Survival's price, peak market cap) go in `modeState: Record<string, number>`,
-seeded by `initialModeState`. Flat numbers keep it serializable.
+Mode-owned values (Survival's price, peak market cap, and the price series its chart draws) go in
+`modeState: Record<string, number | number[]>`, seeded by `initialModeState`. Numbers and number
+arrays only, so it stays serializable and the engine, not the Component, carries the history.
+
+`Question.choices` is a 4-tuple and `answerIndex` is `0 | 1 | 2 | 3`, so a malformed question is a
+compile error rather than a runtime surprise.
 
 Added `onAnswer?(state, result)` beside the requested `tick` and `isOver`: a correct answer has to
 spike Survival's price, and that is mode-owned state the engine can't compute. Also added

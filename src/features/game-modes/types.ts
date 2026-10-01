@@ -16,10 +16,11 @@ import type { Difficulty, Question, Topic } from "@/types/question";
 export type SessionStatus = "idle" | "playing" | "feedback" | "summary";
 
 /**
- * Numbers a mode owns and the engine carries without interpreting — Survival's share price
- * and peak market cap, for example. Flat numbers keep it serializable.
+ * Values a mode owns and the engine carries without interpreting — Survival's share price,
+ * peak market cap, and the price series its chart draws, for example. Numbers and number
+ * arrays only, so it stays serializable.
  */
-export type ModeState = Record<string, number>;
+export type ModeState = Record<string, number | number[]>;
 
 /** What the engine knows at any moment. The read-only input to every mode hook. */
 export type GameState = {
