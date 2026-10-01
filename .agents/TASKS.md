@@ -30,7 +30,7 @@ prevent.
 |----|------|-------|--------|--------|
 | F1 | Scaffold Next.js + TS + Tailwind + shadcn/ui; add `npm run agents` alias | Thomas | done | main (bootstrap) |
 | F2 | CI: run `npm run verify` (format:check + lint + typecheck + build) on PR | — | open | — |
-| F3 | `GameModeDefinition` contract + mode registry — must include `tick()` + `isOver()`, see DECISIONS | — | open | — |
+| F3 | `GameModeDefinition` contract + mode registry — must include `tick()` + `isOver()`, see DECISIONS | Josh | wip | feat/mode-contract |
 | F4 | `useGameSession` engine: idle → playing → feedback → summary | — | open | — |
 | F5 | Shared game chrome: QuestionCard, AnswerButton, ScoreBar, ComboMeter, Timer, LivesRow | — | open | — |
 | F6 | Progress store: XP, levels, streak, badges (zustand + localStorage) | — | open | — |
