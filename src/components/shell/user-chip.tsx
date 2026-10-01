@@ -8,7 +8,9 @@ export function UserChip({ user }: UserChipProps) {
   return (
     <Link
       href="/profile"
-      className="flex items-center gap-3 rounded-md p-2 transition-colors hover:bg-panel-hover collapsed:justify-center collapsed:p-0"
+      // p-1.5 inside the sidebar's px-3 puts the avatar's centre at 36px — the middle of
+      // the collapsed rail — so it holds still while the rail narrows around it.
+      className="flex items-center gap-3 rounded-md p-1.5 transition-colors hover:bg-panel-hover collapsed:hover:bg-transparent"
     >
       <span
         aria-hidden
@@ -16,7 +18,7 @@ export function UserChip({ user }: UserChipProps) {
       >
         {user.initials}
       </span>
-      <span className="min-w-0 collapsed:hidden">
+      <span className="min-w-0 transition-opacity duration-150 collapsed:opacity-0">
         <span className="block truncate text-[13px] text-fg">{user.name}</span>
         <span className="block truncate font-mono text-[11px] text-muted">@{user.handle}</span>
       </span>

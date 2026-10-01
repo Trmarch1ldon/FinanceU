@@ -2,8 +2,12 @@
 
 /* The sidebar's collapsed state lives on <html data-sidebar>, set before paint. This
    variant lets components style against it declaratively (`collapsed:opacity-0`)
-   instead of threading a boolean through every child. */
-@custom-variant collapsed (:root[data-sidebar="collapsed"] &);
+   instead of threading a boolean through every child.
+
+   The mobile drawer is excluded: it is never collapsed, but it shares the attribute
+   with the desktop rail, so without this it rendered icon-only for anyone who had
+   collapsed the rail on a wider screen. */
+@custom-variant collapsed (:root[data-sidebar="collapsed"] &:not([data-drawer] *));
 
 /* Tailwind v4 is CSS-first: there is no tailwind.config.ts. The palette and design
    tokens live here. CLAIM-REQUIRED — see CLAUDE.md. A token change here changes every
@@ -24,6 +28,9 @@
   --fg: #e6e6e6;
   --muted: #9aa5b1;
   --locked: #2a2f36; /* unreachable roadmap nodes, disabled */
+  /* Text and icons on locked items. --locked itself is ~1.3:1 on a panel — fine for a
+     border, unreadable as a label. This clears 4.5:1 while staying a step below muted. */
+  --locked-fg: #7a8590;
 
   /* ── Accent. Scarce on purpose: active nav, in-progress, focus. Nothing else. ─ */
   --accent: #ff9f1c;
@@ -86,6 +93,7 @@
   --color-fg: var(--fg);
   --color-muted: var(--muted);
   --color-locked: var(--locked);
+  --color-locked-fg: var(--locked-fg);
 
   --color-accent: var(--accent);
   --color-accent-dim: var(--accent-dim);
@@ -269,6 +277,25 @@
   animation: roadmap-ring-draw 1100ms var(--ease-arrive) 900ms both;
 }
 
+/* The collapsed rank ring fills like the bars do. Registered so the browser can
+   interpolate it — an unregistered custom property only flips at the end. */
+@property --rank-pct {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+@keyframes rank-ring-fill {
+  from {
+    --rank-pct: 0;
+  }
+}
+
+.rank-ring {
+  background: conic-gradient(var(--accent) calc(var(--rank-pct) * 3.6deg), var(--border) 0deg);
+  animation: rank-ring-fill 900ms var(--ease-arrive) 200ms both;
+}
+
 /* Ticker tape. The track holds two copies of the list, so translating by -50%
    loops seamlessly. */
 @keyframes ticker-scroll {
@@ -316,7 +343,8 @@
   .rail-draw,
   .node-land,
   .spark-draw,
-  .roadmap-ring {
+  .roadmap-ring,
+  .rank-ring {
     animation: none !important;
   }
 
