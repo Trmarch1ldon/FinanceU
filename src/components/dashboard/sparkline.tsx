@@ -15,13 +15,20 @@ export function Sparkline({ values, label, className }: SparklineProps) {
   const max = Math.max(...values, 1);
   const step = width / (values.length - 1);
 
-  const points = values
-    .map((value, index) => {
-      const x = index * step;
-      const y = height - (value / max) * (height - 3) - 1.5;
-      return `${x.toFixed(1)},${y.toFixed(1)}`;
-    })
-    .join(" ");
+  const coords = values.map((value, index) => ({
+    x: index * step,
+    y: height - (value / max) * (height - 3) - 1.5,
+  }));
+
+  const points = coords.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+
+  // Path length drives stroke-dasharray so the line can draw itself left to right.
+  // Summing the segments is exact for a polyline — no need for getTotalLength().
+  const length = coords.reduce((total, point, index) => {
+    if (index === 0) return 0;
+    const previous = coords[index - 1];
+    return total + Math.hypot(point.x - previous.x, point.y - previous.y);
+  }, 0);
 
   return (
     <svg
@@ -41,6 +48,8 @@ export function Sparkline({ values, label, className }: SparklineProps) {
         strokeLinecap="round"
         strokeLinejoin="round"
         vectorEffect="non-scaling-stroke"
+        className="spark-draw"
+        style={{ ["--spark-len" as string]: length.toFixed(1) }}
       />
     </svg>
   );

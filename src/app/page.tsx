@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { AccuracyByTopic } from "@/components/dashboard/accuracy-by-topic";
 import { ActivityHeatmap } from "@/components/dashboard/activity-heatmap";
+import { CountedValue } from "@/components/dashboard/counted-value";
 import { FriendsLeaderboard } from "@/components/dashboard/friends-leaderboard";
 import { Panel } from "@/components/dashboard/panel";
 import { SkillRoadmap } from "@/components/dashboard/skill-roadmap";
@@ -24,24 +25,26 @@ export default function DashboardPage() {
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <StatCard
           label="Weekly XP"
-          value={user.weeklyXp.toLocaleString()}
+          value={<CountedValue value={user.weeklyXp} />}
           note="180 above last week"
           trend="up"
           chart={<Sparkline values={user.weeklyXpSeries} label="Daily XP over the last 7 days" />}
         />
         <StatCard
           label="Current Streak"
-          value={`${user.streakDays}`}
+          value={<CountedValue value={user.streakDays} delayMs={120} />}
           note="days — personal best is 18"
         />
         <StatCard
           label="Accuracy"
-          value={`${user.accuracy}%`}
+          value={<CountedValue value={user.accuracy} decimals={1} suffix="%" delayMs={240} />}
           note="1.2 points this week"
           trend="up"
         />
         <StatCard
           label="Rank"
+          // Not counted: rank is an ordinal, not a magnitude. Counting up to it reads
+          // backwards (a bigger number is worse) and shows a nonsense "#0" on the way.
           value={`#${user.globalRank.toLocaleString()}`}
           note={`${user.friendsRank} of ${user.friendsTotal} among friends`}
         />

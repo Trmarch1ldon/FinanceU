@@ -1,5 +1,6 @@
-import { cn } from "@/lib/utils";
 import type { Friend } from "@/types/dashboard";
+
+import { StandingRow } from "./standing-row";
 
 type FriendsLeaderboardProps = {
   friends: Friend[];
@@ -7,50 +8,49 @@ type FriendsLeaderboardProps = {
   currentHandle: string;
 };
 
-const GLYPH = { up: "▲", down: "▼", flat: "▬" } as const;
+const SHOWN = 5;
 
-function movement(delta: number) {
-  if (delta > 0) return { key: "up" as const, text: `${delta}`, className: "text-up" };
-  if (delta < 0)
-    return { key: "down" as const, text: `${Math.abs(delta)}`, className: "text-down" };
-  return { key: "flat" as const, text: "", className: "text-muted" };
-}
-
+/** Top five, plus your own row pinned underneath when you're outside them — a friends
+ *  board that can leave you off entirely doesn't answer the only question it's for. */
 export function FriendsLeaderboard({ friends, currentHandle }: FriendsLeaderboardProps) {
-  const standings = [...friends].sort((a, b) => b.weeklyXp - a.weeklyXp).slice(0, 5);
+  const standings = [...friends].sort((a, b) => b.weeklyXp - a.weeklyXp);
+  const yourIndex = standings.findIndex((friend) => friend.handle === currentHandle);
+  const isYouPinned = yourIndex >= SHOWN;
+
+  const you = standings[yourIndex];
+  const ahead = yourIndex > 0 ? standings[yourIndex - 1] : undefined;
 
   return (
-    <ol className="space-y-px">
-      {standings.map((friend, index) => {
-        const move = movement(friend.rankDelta);
-        const isYou = friend.handle === currentHandle;
-
-        return (
-          <li
+    <div className="flex h-full flex-col gap-3">
+      <ol className="space-y-px">
+        {standings.slice(0, SHOWN).map((friend, index) => (
+          <StandingRow
             key={friend.id}
-            className={cn(
-              "grid grid-cols-[2ch_1fr_auto_4ch] items-center gap-3 rounded-sm px-2 py-1.5",
-              isYou && "bg-accent-dim",
-            )}
-          >
-            <span className="font-mono text-[11px] text-muted tabular-nums">{index + 1}</span>
-            <span className={cn("truncate text-[12px]", isYou ? "text-accent" : "text-fg")}>
-              {friend.name}
-              {isYou && <span className="ml-1.5 font-mono text-[10px] text-accent/70">YOU</span>}
-            </span>
-            <span className="font-mono text-[12px] text-fg tabular-nums">
-              {friend.weeklyXp.toLocaleString()}
-            </span>
-            <span className={cn("font-mono text-[11px] tabular-nums", move.className)}>
-              <span aria-hidden>{GLYPH[move.key]}</span>
-              <span className="sr-only">
-                {move.key === "up" ? "up" : move.key === "down" ? "down" : "no change"}
-              </span>
-              {move.text}
-            </span>
-          </li>
-        );
-      })}
-    </ol>
+            friend={friend}
+            position={index + 1}
+            isYou={index === yourIndex}
+          />
+        ))}
+      </ol>
+
+      {isYouPinned && you && (
+        <ol start={yourIndex + 1} className="border-t border-dashed border-border pt-2">
+          <StandingRow friend={you} position={yourIndex + 1} isYou />
+        </ol>
+      )}
+
+      {you && (
+        <p className="mt-auto border-t border-border pt-3 font-mono text-[11px] text-muted tabular-nums">
+          {ahead ? (
+            <>
+              <span className="text-fg">{(ahead.weeklyXp - you.weeklyXp).toLocaleString()} XP</span>{" "}
+              behind {ahead.name} for #{yourIndex}
+            </>
+          ) : (
+            <>Leading by {(you.weeklyXp - (standings[1]?.weeklyXp ?? 0)).toLocaleString()} XP</>
+          )}
+        </p>
+      )}
+    </div>
   );
 }

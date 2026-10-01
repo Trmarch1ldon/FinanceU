@@ -1,6 +1,7 @@
 "use client";
 
 import { Check, Lock } from "lucide-react";
+import { motion, type Transition } from "motion/react";
 
 import { cn } from "@/lib/utils";
 import type { RoadmapNode } from "@/types/dashboard";
@@ -8,12 +9,16 @@ import type { RoadmapNode } from "@/types/dashboard";
 type RoadmapNodeProps = {
   node: RoadmapNode;
   onSelect: (node: RoadmapNode) => void;
+  landDelayMs?: number;
 };
 
 const RADIUS = 19;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
-export function RoadmapNodeMark({ node, onSelect }: RoadmapNodeProps) {
+/** Fast and flat: a press is acknowledged, not celebrated. */
+const PRESS: Transition = { type: "spring", bounce: 0, visualDuration: 0.15 };
+
+export function RoadmapNodeMark({ node, onSelect, landDelayMs = 0 }: RoadmapNodeProps) {
   const locked = node.state === "locked";
   const inProgress = node.state === "in-progress";
 
@@ -24,18 +29,27 @@ export function RoadmapNodeMark({ node, onSelect }: RoadmapNodeProps) {
       : `${node.name}, completed`;
 
   return (
-    <li className="flex min-w-0 flex-col items-center gap-2">
-      <button
+    <li
+      className="node-land flex min-w-0 flex-col items-center gap-2"
+      style={{ animationDelay: `${landDelayMs}ms` }}
+    >
+      <motion.button
         type="button"
         disabled={locked}
+        whileTap={locked ? undefined : { scale: 0.94 }}
+        transition={PRESS}
         onClick={() => onSelect(node)}
         aria-label={describe}
         title={describe}
         className={cn(
-          "relative grid size-11 shrink-0 place-items-center rounded-full border transition-colors",
+          "relative grid size-11 shrink-0 place-items-center rounded-full border",
+          // `translate`, not `transform`: Tailwind's hover lift uses the translate property,
+          // and Motion owns transform for the press — a CSS transition on transform would
+          // fight Motion's per-frame writes.
+          "transition-[border-color,translate] duration-150",
           locked
-            ? "cursor-not-allowed border-border bg-panel text-locked"
-            : "border-transparent bg-panel hover:border-accent-edge",
+            ? "cursor-not-allowed border-border bg-panel text-locked-fg"
+            : "border-transparent bg-panel hover:-translate-y-px hover:border-accent",
         )}
       >
         {inProgress && (
@@ -71,12 +85,12 @@ export function RoadmapNodeMark({ node, onSelect }: RoadmapNodeProps) {
           </span>
         )}
         {locked && <Lock size={14} strokeWidth={1.75} aria-hidden />}
-      </button>
+      </motion.button>
 
       <span
         className={cn(
           "max-w-[9ch] text-center font-mono text-[10px] leading-tight tracking-wide",
-          locked ? "text-locked" : "text-muted",
+          locked ? "text-locked-fg" : "text-muted",
         )}
       >
         {node.short}
