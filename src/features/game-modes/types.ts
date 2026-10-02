@@ -1,39 +1,107 @@
 /**
- * STUB — owner: task F3. CLAIM-REQUIRED (see CLAUDE.md).
+ * The game-mode contract (task F3). CLAIM-REQUIRED (see CLAUDE.md).
  *
- * This is the contract that makes parallel work possible: two people building two game
- * modes share only their one line in registry.ts. Get it right before the modes land —
- * changing it afterwards forces everyone to rebase.
+ * This is what makes parallel work possible: two people building two modes share only their
+ * one line in registry.ts. Changing it after modes land forces everyone to rebase, so extend
+ * it with optional fields rather than reshaping existing ones.
  *
- * Sketch:
- *   export type ScoringContext = {
- *     correct: boolean;
- *     difficulty: Difficulty;
- *     msToAnswer: number;
- *     comboCount: number;     // consecutive correct answers
- *     timeRemainingSec?: number;
- *   };
- *
- *   export type GameModeProps = {
- *     session: GameSession;    // from src/lib/engine/use-game-session.ts
- *   };
- *
- *   export type GameModeDefinition = {
- *     id: string;              // url segment, e.g. "time-attack"
- *     name: string;
- *     tagline: string;
- *     icon: LucideIcon;
- *     rules: {
- *       questionCount?: number;   // undefined = unbounded (time or lives cap it)
- *       timeLimitSec?: number;
- *       lives?: number;
- *       difficultyRamp?: boolean;
- *     };
- *     scoring: (ctx: ScoringContext) => number;
- *     Component: React.ComponentType<GameModeProps>;
- *   };
- *
- * A mode supplies rules, scoring, and presentation. It NEVER re-implements answer
- * checking, question selection, or combo tracking — that lives in src/lib/engine/.
+ * A mode supplies rules, scoring, and presentation. It NEVER re-implements answer checking,
+ * question selection, or combo tracking — that lives in src/lib/engine/.
  */
-export {};
+import type { ComponentType } from "react";
+import type { LucideIcon } from "lucide-react";
+
+import type { Difficulty, Question, Topic } from "@/types/question";
+
+export type SessionStatus = "idle" | "playing" | "feedback" | "summary";
+
+/**
+ * Values a mode owns and the engine carries without interpreting — Survival's share price,
+ * peak market cap, and the price series its chart draws, for example. Numbers and number
+ * arrays only, so it stays serializable.
+ */
+export type ModeState = Record<string, number | number[]>;
+
+/** What the engine knows at any moment. The read-only input to every mode hook. */
+export type GameState = {
+  status: SessionStatus;
+  /** Zero-based index of the current question. */
+  index: number;
+  score: number;
+  /** Consecutive correct answers; resets to 0 on a wrong one. */
+  combo: number;
+  answeredCount: number;
+  correctCount: number;
+  /** null when the mode has no lives rule. */
+  livesLeft: number | null;
+  /** Time spent in "playing", excluding feedback screens. */
+  elapsedMs: number;
+  modeState: ModeState;
+};
+
+/** One answered question, as scoring and `onAnswer` see it. */
+export type ScoringContext = {
+  correct: boolean;
+  difficulty: Difficulty;
+  msToAnswer: number;
+  /** Combo count including this answer. */
+  comboCount: number;
+  /** Only set when the mode has a time limit. */
+  timeRemainingSec?: number;
+};
+
+/** What `useGameSession` (task F4) returns and every mode's Component receives. */
+export type GameSession = GameState & {
+  question: Question | null;
+  lastAnswer: { choiceIndex: number; correct: boolean } | null;
+  /** null when the mode has no time limit. */
+  timeRemainingSec: number | null;
+  start: () => void;
+  answer: (choiceIndex: number) => void;
+  next: () => void;
+};
+
+export type GameModeProps = {
+  session: GameSession;
+};
+
+export type GameModeRules = {
+  /** undefined = unbounded; time, lives or `isOver` ends the run instead. */
+  questionCount?: number;
+  timeLimitSec?: number;
+  lives?: number;
+  /** Serve harder questions as the run goes on. */
+  difficultyRamp?: boolean;
+  /** Restrict the question pool. undefined = every topic. */
+  topics?: Topic[];
+  /** Same questions for everyone on a given calendar day (Daily Challenge). */
+  seededByDate?: boolean;
+};
+
+export type GameModeDefinition = {
+  /** URL segment, e.g. "time-attack". */
+  id: string;
+  name: string;
+  tagline: string;
+  icon: LucideIcon;
+  rules: GameModeRules;
+  /** Points for one answer. Compose the pure helpers in lib/engine/scoring.ts. */
+  scoring: (ctx: ScoringContext) => number;
+
+  /*
+   * Optional hooks for modes whose pressure or ending isn't a count, a clock, or lives.
+   * Survival needs all three: the price decays while you think, answers move it, and the run
+   * ends at delisting. See DECISIONS.md, 2026-09-30.
+   */
+
+  /** Starting values for `modeState`. */
+  initialModeState?: ModeState;
+  /** Called on a fixed interval, only while status is "playing". Returns the next modeState. */
+  tick?: (state: GameState, dtMs: number) => ModeState;
+  /** Called once per answer, after scoring. Returns the next modeState. */
+  onAnswer?: (state: GameState, result: ScoringContext) => ModeState;
+  /** Mode-owned end condition, checked alongside questionCount, timeLimitSec and lives. */
+  isOver?: (state: GameState) => boolean;
+
+  Component: ComponentType<GameModeProps>;
+};
