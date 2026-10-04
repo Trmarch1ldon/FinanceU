@@ -11,7 +11,13 @@
 import type { ComponentType } from "react";
 import type { LucideIcon } from "lucide-react";
 
-import type { Difficulty, Question, Topic } from "@/types/question";
+import type {
+  Difficulty,
+  NumericQuestion,
+  PlayableQuestion,
+  Question,
+  Topic,
+} from "@/types/question";
 
 export type SessionStatus = "idle" | "playing" | "feedback" | "summary";
 
@@ -30,6 +36,8 @@ export type GameState = {
   score: number;
   /** Consecutive correct answers; resets to 0 on a wrong one. */
   combo: number;
+  /** Longest combo this run. */
+  bestCombo: number;
   answeredCount: number;
   correctCount: number;
   /** null when the mode has no lives rule. */
@@ -52,13 +60,30 @@ export type ScoringContext = {
 
 /** What `useGameSession` (task F4) returns and every mode's Component receives. */
 export type GameSession = GameState & {
-  question: Question | null;
-  lastAnswer: { choiceIndex: number; correct: boolean } | null;
+  question: PlayableQuestion | null;
+  /** `choiceIndex` for a multiple-choice answer, `value` for a numeric one. */
+  lastAnswer: { correct: boolean; choiceIndex?: number; value?: number } | null;
   /** null when the mode has no time limit. */
   timeRemainingSec: number | null;
+  /** Starts a run. From "summary" it starts a fresh one. */
   start: () => void;
+  /** Answer a multiple-choice question. */
   answer: (choiceIndex: number) => void;
+  /** Answer a numeric question. */
+  answerNumber: (value: number) => void;
   next: () => void;
+  /**
+   * The state as of right now, outside React. With `rules.liveTicks`, ticks update only this,
+   * so a mode can redraw a chart ten times a second without re-rendering its whole tree; the
+   * GameState fields above then refresh on answers and status changes only.
+   */
+  live: LiveState;
+};
+
+export type LiveState = {
+  get: () => GameState;
+  /** Called after every change, ticks included. Returns an unsubscribe function. */
+  subscribe: (listener: (state: GameState) => void) => () => void;
 };
 
 export type GameModeProps = {
@@ -76,6 +101,25 @@ export type GameModeRules = {
   topics?: Topic[];
   /** Same questions for everyone on a given calendar day (Daily Challenge). */
   seededByDate?: boolean;
+  /**
+   * How long to show the result before the next question. undefined = wait for `next()`;
+   * 0 = never pause — the next question is served in the same update and the clock runs on.
+   */
+  feedbackMs?: number;
+  /** `tick` interval. Default 100. */
+  tickMs?: number;
+  /** Keep ticks out of React — see `GameSession.live`. */
+  liveTicks?: boolean;
+};
+
+/** Where a mode's questions come from. The engine still owns picking among them. */
+export type QuestionSource = {
+  /** A fixed bank. Drawn without repeats until it runs out. */
+  pool?: Question[];
+  /** Endless template questions, e.g. quick math. */
+  generate?: (difficulty: Difficulty, random: () => number) => NumericQuestion;
+  /** Chance (0–1) of a generated question over a pool one. Default: 1 when there's no pool. */
+  generatedShare?: (state: GameState) => number;
 };
 
 export type GameModeDefinition = {
@@ -102,6 +146,13 @@ export type GameModeDefinition = {
   onAnswer?: (state: GameState, result: ScoringContext) => ModeState;
   /** Mode-owned end condition, checked alongside questionCount, timeLimitSec and lives. */
   isOver?: (state: GameState) => boolean;
+
+  /** Where questions come from. Required until the topic banks (D1–D4) are wired in. */
+  questions?: QuestionSource;
+  /** Overrides the default ramp (by questions answered) when `rules.difficultyRamp` is set. */
+  difficultyAt?: (state: GameState) => Difficulty;
+  /** Replaces the summed per-answer score when the run ends — e.g. time survived + peak. */
+  finalScore?: (state: GameState) => number;
 
   Component: ComponentType<GameModeProps>;
 };

@@ -25,7 +25,7 @@ const NAV: NavEntry[] = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/play/classic", label: "Classic", icon: ListChecks },
   { href: "/play/time-attack", label: "Time Attack", icon: Timer },
-  { href: "/play/survival", label: "Survival", icon: TrendingDown },
+  { href: "/play/survival", label: "Margin Call", icon: TrendingDown },
   { href: "/play/daily", label: "Daily", icon: CalendarDays },
   { href: "/leaderboard", label: "Leaderboard", icon: Trophy },
   { href: "/friends", label: "Friends", icon: Users },

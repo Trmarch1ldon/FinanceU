@@ -10,9 +10,10 @@
  *   …
  *   export const GAME_MODES: GameModeDefinition[] = [classicMode];
  */
+import { survivalMode } from "./survival/mode";
 import type { GameModeDefinition } from "./types";
 
-export const GAME_MODES: GameModeDefinition[] = [];
+export const GAME_MODES: GameModeDefinition[] = [survivalMode];
 
 export const getMode = (id: string): GameModeDefinition | undefined =>
   GAME_MODES.find((mode) => mode.id === id);

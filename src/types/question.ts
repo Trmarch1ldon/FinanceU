@@ -32,3 +32,25 @@ export type Question = {
   /** Shown after answering. This is where the learning happens, so never leave it thin. */
   explanation: string;
 };
+
+/**
+ * A question answered by typing a number rather than picking one of four — the quick-math
+ * prompts Survival and Time Attack fire off. Generated from templates, so these never run out
+ * and are never stored in a bank. Added for F4; `Question` itself is unchanged.
+ */
+export type NumericQuestion = {
+  kind: "numeric";
+  id: string;
+  topic: Topic;
+  difficulty: Difficulty;
+  prompt: string;
+  answer: number;
+  /** Largest accepted distance from `answer`, so "12.4" passes for 12.35. */
+  tolerance: number;
+  /** Shown beside the input — "%", "$", "x". */
+  unit?: string;
+  explanation: string;
+};
+
+/** Anything a session can serve. Narrow with `"kind" in q && q.kind === "numeric"`. */
+export type PlayableQuestion = Question | NumericQuestion;

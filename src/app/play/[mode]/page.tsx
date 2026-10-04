@@ -1,19 +1,37 @@
-/**
- * Game host — STUB.
- *
- * Resolves the mode from `src/features/game-modes/registry.ts` (task F3) and renders
- * its Component through the engine (task F4). Until those exist, it just echoes the
- * route param so the route is navigable.
- */
+import { notFound } from "next/navigation";
+
+import { PagePlaceholder } from "@/components/shell/page-placeholder";
+import { getMode } from "@/features/game-modes/registry";
+import { GameHost } from "@/lib/engine/game-host";
+
+/** Modes in the nav that haven't registered yet. Shown as a placeholder, not a 404, so the
+ *  sidebar never leads somewhere broken. Delete each line as its mode lands. */
+const UNBUILT: Record<string, { title: string; description: string; task: string }> = {
+  classic: {
+    title: "Classic",
+    description: "Ten questions, an explanation after each. The mode to learn in.",
+    task: "M1",
+  },
+  daily: {
+    title: "Daily",
+    description: "The same run for everyone today. One attempt, and it feeds your streak.",
+    task: "M4",
+  },
+  "time-attack": {
+    title: "Time Attack",
+    description: "Sixty seconds. Combos multiply, speed pays.",
+    task: "M2",
+  },
+};
+
+/** Game host route: resolves the mode from the registry and runs it through the engine. */
 export default async function PlayPage({ params }: { params: Promise<{ mode: string }> }) {
   const { mode } = await params;
 
-  return (
-    <main className="mx-auto max-w-2xl px-6 py-16">
-      <h1 className="text-2xl font-bold text-primary">{mode}</h1>
-      <p className="mt-2 text-muted-foreground">
-        Not built yet. The registry (F3) and engine (F4) land first, then the mode itself.
-      </p>
-    </main>
-  );
+  if (getMode(mode)) return <GameHost modeId={mode} />;
+
+  const unbuilt = UNBUILT[mode];
+  if (unbuilt) return <PagePlaceholder {...unbuilt} />;
+
+  notFound();
 }
