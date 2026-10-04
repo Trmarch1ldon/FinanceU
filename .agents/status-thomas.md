@@ -17,7 +17,8 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
   `src/app/play/**`, `src/app/page.tsx`, `src/app/globals.css`, `src/components/dashboard/**`,
   `src/components/shell/sidebar.tsx`
 - **Started:** 2026-10-04
-- **State:** claimed, starting with the pure match reducer
+- **State:** built and pushed on `feat/hostile-takeover` (`8cca8fb`), `npm run verify` green, engine
+  sim-tested bot vs bot, played end to end in the browser. Awaiting Thomas's review / merge.
 
 ## Next
 
