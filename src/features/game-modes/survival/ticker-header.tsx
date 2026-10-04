@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { MARGIN_CALL as C } from "./config";
 import { clock, money, signedMoney, signedPct } from "./format";
 import { drainPerSec, isBullRun, readMarket } from "./market";
+import { SoundToggle } from "./sound-toggle";
 
 type TickerHeaderProps = {
   ticker: string;
@@ -77,31 +78,34 @@ export function TickerHeader({ ticker, live, streak }: TickerHeaderProps) {
         </div>
       </div>
 
-      <dl className="flex gap-8 font-mono tabular-nums">
-        <div>
-          <dt className="label">Survived</dt>
-          <dd ref={timeRef} className="mt-1.5 text-[18px] leading-none text-fg">
-            0:00
-          </dd>
-        </div>
-        <div>
-          <dt className="label">Drain</dt>
-          <dd ref={drainRef} className="mt-1.5 text-[18px] leading-none text-down">
-            −{C.baseDrainPerSec.toFixed(2)}/s
-          </dd>
-        </div>
-        <div>
-          <dt className="label">Streak</dt>
-          <dd className={cn("mt-1.5 text-[18px] leading-none", isBull ? "text-up" : "text-fg")}>
-            {streak}
-            {isBull && (
-              <span className="ml-2 align-middle text-[11px] tracking-wide">
-                BULL RUN ×{C.bullRunMultiplier}
-              </span>
-            )}
-          </dd>
-        </div>
-      </dl>
+      <div className="flex items-end gap-8">
+        <dl className="flex gap-8 font-mono tabular-nums">
+          <div>
+            <dt className="label">Survived</dt>
+            <dd ref={timeRef} className="mt-1.5 text-[18px] leading-none text-fg">
+              0:00
+            </dd>
+          </div>
+          <div>
+            <dt className="label">Drain</dt>
+            <dd ref={drainRef} className="mt-1.5 text-[18px] leading-none text-down">
+              −{C.baseDrainPerSec.toFixed(2)}/s
+            </dd>
+          </div>
+          <div>
+            <dt className="label">Streak</dt>
+            <dd className={cn("mt-1.5 text-[18px] leading-none", isBull ? "text-up" : "text-fg")}>
+              {streak}
+              {isBull && (
+                <span className="ml-2 align-middle text-[11px] tracking-wide">
+                  BULL RUN ×{C.bullRunMultiplier}
+                </span>
+              )}
+            </dd>
+          </div>
+        </dl>
+        <SoundToggle />
+      </div>
     </header>
   );
 }

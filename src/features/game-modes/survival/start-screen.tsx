@@ -2,6 +2,7 @@
 
 import { MARGIN_CALL as C } from "./config";
 import { money } from "./format";
+import { SoundToggle } from "./sound-toggle";
 
 type StartScreenProps = {
   ticker: string;
@@ -32,10 +33,13 @@ export function StartScreen({ ticker, bestScore, onOpen }: StartScreenProps) {
         OPEN MARKET
       </button>
 
-      <p className="mt-6 font-mono text-[11px] text-muted">
-        Type a number + <kbd>Enter</kbd> · or press <kbd>1</kbd>–<kbd>4</kbd>
-        {bestScore !== null && <> · Best {bestScore.toLocaleString("en-US")}</>}
-      </p>
+      <div className="mt-6 flex items-center justify-center gap-3 font-mono text-[11px] text-muted">
+        <p>
+          Type a number + <kbd>Enter</kbd> · or press <kbd>1</kbd>–<kbd>4</kbd> · <kbd>M</kbd> mutes
+          {bestScore !== null && <> · Best {bestScore.toLocaleString("en-US")}</>}
+        </p>
+        <SoundToggle />
+      </div>
     </section>
   );
 }

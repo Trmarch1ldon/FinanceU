@@ -57,4 +57,7 @@ export const MARGIN_CALL = {
   liveWindowSec: 60,
 
   countdownSec: 3,
+
+  /** Master volume for every sound (0–1). Each sound's own level is relative to this. */
+  volume: 0.35,
 } as const;

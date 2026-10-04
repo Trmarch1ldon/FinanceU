@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { MARGIN_CALL as C } from "./config";
+import { playCountdownTick, playOpeningBell } from "./sound";
 
 type CountdownProps = { onDone: () => void };
 
@@ -12,9 +13,11 @@ export function Countdown({ onDone }: CountdownProps) {
 
   useEffect(() => {
     if (left === 0) {
+      playOpeningBell();
       onDone();
       return;
     }
+    playCountdownTick();
     const timer = setTimeout(() => setLeft((n) => n - 1), 1000);
     return () => clearTimeout(timer);
   }, [left, onDone]);

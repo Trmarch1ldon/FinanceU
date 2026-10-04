@@ -15,6 +15,15 @@ import { isBullRun, readMarket, tickerFor } from "./market";
 import { PriceChart } from "./price-chart";
 import { QuestionPanel } from "./question-panel";
 import { saveRun } from "./results";
+import {
+  isSoundOn,
+  playBullRun,
+  playFill,
+  playMarginCall,
+  playMiss,
+  setSoundOn,
+  unlockAudio,
+} from "./sound";
 import { StartScreen } from "./start-screen";
 import { TickerHeader } from "./ticker-header";
 import { useBestScore } from "./use-best-score";
@@ -79,10 +88,33 @@ export function MarginCallView({ session }: GameModeProps) {
     return live.subscribe(update);
   }, [live]);
 
+  // A sound per answer. Keyed on the count, so two wrong answers in a row each get one.
+  const { answeredCount, lastAnswer, combo } = session;
+  useEffect(() => {
+    if (answeredCount === 0 || !lastAnswer) return;
+    if (!lastAnswer.correct) playMiss();
+    else if (combo === C.bullRunStreak) playBullRun();
+    else playFill();
+    // lastAnswer and combo always change with the count; the count is the trigger.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [answeredCount]);
+
+  // M mutes from anywhere but the answer field, where it's just a letter.
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key.toLowerCase() !== "m" || event.metaKey || event.ctrlKey || event.altKey) return;
+      if (event.target instanceof HTMLInputElement) return;
+      setSoundOn(!isSoundOn());
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
   // Save each finished run exactly once — the ids guard against effects re-running.
   useEffect(() => {
     if (!isOver || savedRunId.current === runId.current) return;
     savedRunId.current = runId.current;
+    playMarginCall();
     saveRun({
       mode: "survival",
       user: mockUser.handle,
@@ -117,7 +149,15 @@ export function MarginCallView({ session }: GameModeProps) {
   return (
     <div ref={rootRef} className="mx-auto max-w-[1400px] space-y-4 p-4 lg:p-6">
       {phase === "intro" && (
-        <StartScreen ticker={ticker} bestScore={bestScore} onOpen={() => setPhase("countdown")} />
+        <StartScreen
+          ticker={ticker}
+          bestScore={bestScore}
+          onOpen={() => {
+            // Inside the click/Enter, so the browser lets every later sound play.
+            unlockAudio();
+            setPhase("countdown");
+          }}
+        />
       )}
 
       {phase === "countdown" && <Countdown onDone={openMarket} />}
@@ -170,7 +210,10 @@ export function MarginCallView({ session }: GameModeProps) {
           correct={session.correctCount}
           bestStreak={session.bestCombo}
           isNewBest={bestScore !== null && session.score >= bestScore}
-          onPlayAgain={() => setPhase("countdown")}
+          onPlayAgain={() => {
+            unlockAudio();
+            setPhase("countdown");
+          }}
           onExit={() => router.push("/")}
         />
       )}
