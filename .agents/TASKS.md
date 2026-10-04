@@ -57,6 +57,7 @@ Each mode is a self-contained folder. Two people building two modes share exactl
 | M2 | Time Attack — 60s, combo multiplier, speed bonus | — | open | — |
 | M3 | Survival — stock-survival: price decays while you think, correct answers spike it, run ends at delisting | Thomas | done | feat/margin-call |
 | M4 | Daily Challenge — date-seeded, one attempt, feeds the streak | — | open | — |
+| M5 | Hostile Takeover — 1v1 control tug-of-war with power-ups; bot ladder now, human opponent later | Thomas | wip | feat/hostile-takeover |
 
 ## Screens — parallel-safe
 

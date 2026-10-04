@@ -9,7 +9,15 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
 
 ## Now
 
-- Nothing claimed.
+- **Task:** M5 (Hostile Takeover — 1v1 mode, bot opponents)
+- **Branch:** `feat/hostile-takeover`
+- **Claimed paths:** `src/features/game-modes/takeover/**`, `src/features/game-modes/survival/**`,
+  `src/features/game-modes/types.ts`, `src/features/game-modes/registry.ts`, `src/lib/engine/**`,
+  `src/components/game/**`, `src/data/questions/mock-concepts.ts`, `src/types/match-result.ts`,
+  `src/app/play/**`, `src/app/page.tsx`, `src/app/globals.css`, `src/components/dashboard/**`,
+  `src/components/shell/sidebar.tsx`
+- **Started:** 2026-10-04
+- **State:** claimed, starting with the pure match reducer
 
 ## Next
 
@@ -18,6 +26,10 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
 - U1b once F3 and F6 land (wire the home shell to the registry and the progress store)
 
 ## Messages to Josh
+
+- 2026-10-04: Taking a new row, **M5 Hostile Takeover** (1v1 vs bots, built for a human opponent
+  later). I'm also moving Margin Call's reusable terminal pieces into `src/components/game/**` (F5's
+  folder) — F5 is unclaimed, so shout if you were about to start it.
 
 - 2026-10-04: **F4 engine + Margin Call (M3) merged to `main`** (`da3440a`); my claim is released.
   `/play/[mode]` now runs any registered mode through `GameHost`. To build a mode: export a
