@@ -213,3 +213,15 @@ still does the picking), `difficultyAt(state)` to override the default ramp, and
 The clock is wall-clock, not tick-count. Background tabs throttle timers, and a run must keep
 draining while you're away rather than pause for whoever switches tabs, so each tick replays the
 real elapsed time in `tickMs` steps.
+
+### 2026-10-04 — Margin Call gets its own amber; the game is a terminal
+
+Margin Call's visual overhaul makes the game screen a multi-panel trading terminal: amber panel
+headers, an amber command prompt, a function-key bar. `--accent` is reserved for active nav,
+in-progress and focus (2026-09-30), and putting it on every panel header would spend that
+scarcity. So the game gets `--terminal-amber` (#FB8B1E), used **only** inside the game's terminal
+chrome. Value colours (`--up` / `--down`) keep their meaning everywhere.
+
+The analyst rating is driven by a momentum score (0–100, up on correct answers, sharply down on
+misses, drifting back to 50) rather than the raw streak: a streak resets to 0 and can't go
+negative, so it could never express Sell.

@@ -37,6 +37,11 @@
   --accent-dim: rgba(255, 159, 28, 0.12);
   --accent-edge: rgba(255, 159, 28, 0.35);
 
+  /* Terminal amber. Margin Call's panel chrome ONLY (headers, prompt, function keys) —
+     the game is a terminal, so its labels are amber. Everywhere else --accent stays
+     scarce. See .agents/DECISIONS.md (2026-10-04). */
+  --terminal-amber: #fb8b1e;
+
   /* ── Value. Gains/losses and right/wrong ONLY — never decoration, and always
         paired with ▲▼ or an icon so colour is never the sole signal. ──────────── */
   /* Measurement fills. Deliberately NOT the accent: orange means your progression
@@ -98,6 +103,7 @@
   --color-accent: var(--accent);
   --color-accent-dim: var(--accent-dim);
   --color-accent-edge: var(--accent-edge);
+  --color-terminal-amber: var(--terminal-amber);
 
   --color-bar: var(--bar);
   --color-up: var(--up);
@@ -356,6 +362,61 @@
     0 0 28px -6px var(--up);
 }
 
+/* Block cursor on the command line. Steps, not a fade: terminals blink hard. */
+@keyframes cursor-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.cursor-blink {
+  animation: cursor-blink 1s steps(1, end) infinite;
+}
+
+/* "● MARKET OPEN" — the dot breathes so the strip never looks frozen. */
+@keyframes market-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.market-pulse {
+  animation: market-pulse 1.6s ease-in-out infinite;
+}
+
+/* LIMIT DOWN banner: shown by data-limit on the chart panel, from the live feed. */
+@keyframes limit-flash {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.limit-down {
+  opacity: 0;
+  pointer-events: none;
+}
+
+[data-limit="true"] .limit-down {
+  animation: limit-flash 300ms steps(1, end) 5;
+  opacity: 1;
+}
+
+/* New rows in News and Time & Sales slide in from above. */
+@keyframes row-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+.row-in {
+  animation: row-in 220ms var(--ease-arrive) both;
+}
+
 @keyframes countdown-tick {
   from {
     opacity: 0;
@@ -401,7 +462,10 @@
   .spark-draw,
   .roadmap-ring,
   .rank-ring,
-  .countdown-tick {
+  .countdown-tick,
+  .cursor-blink,
+  .market-pulse,
+  .row-in {
     animation: none !important;
   }
 

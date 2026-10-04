@@ -12,8 +12,10 @@ type StartScreenProps = {
 
 export function StartScreen({ ticker, bestScore, onOpen }: StartScreenProps) {
   return (
-    <section className="panel mx-auto max-w-xl px-6 py-12 text-center">
-      <p className="label">Survival</p>
+    <section className="mx-auto max-w-xl border border-border bg-bg px-6 py-12 text-center">
+      <p className="font-mono text-[10px] tracking-[0.16em] text-terminal-amber">
+        SURVIVAL · {ticker}
+      </p>
       <h1 className="mt-3 font-mono text-[32px] leading-none font-medium tracking-[0.08em] text-fg">
         MARGIN CALL
       </h1>
@@ -28,14 +30,15 @@ export function StartScreen({ ticker, bestScore, onOpen }: StartScreenProps) {
         // Enter on the focused button opens the market — no mouse needed.
         autoFocus
         onClick={onOpen}
-        className="mt-8 rounded-md bg-accent px-6 py-2.5 font-mono text-[13px] tracking-[0.12em] text-bg transition-opacity hover:opacity-90"
+        className="mt-8 bg-terminal-amber px-6 py-2.5 font-mono text-[13px] tracking-[0.12em] text-bg transition-opacity hover:opacity-90"
       >
-        OPEN MARKET
+        OPEN MARKET &lt;GO&gt;
       </button>
 
       <div className="mt-6 flex items-center justify-center gap-3 font-mono text-[11px] text-muted">
         <p>
           Type a number + <kbd>Enter</kbd> · or press <kbd>1</kbd>–<kbd>4</kbd> · <kbd>M</kbd> mutes
+          · <kbd>F1</kbd> help
           {bestScore !== null && <> · Best {bestScore.toLocaleString("en-US")}</>}
         </p>
         <SoundToggle />

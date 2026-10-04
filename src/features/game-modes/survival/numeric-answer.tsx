@@ -6,18 +6,23 @@ import { parseNumericInput } from "@/lib/engine/check-answer";
 import { cn } from "@/lib/utils";
 
 type NumericAnswerProps = {
+  ticker: string;
   unit?: string;
   onSubmit: (value: number, raw: string) => void;
 };
 
-/** The typed-answer field. Mounted fresh per question, so it always starts empty and focused. */
-export function NumericAnswer({ unit, onSubmit }: NumericAnswerProps) {
+/**
+ * The typed answer, as a terminal command line: amber prompt, blinking block cursor, <GO>.
+ * The real input sits over an invisible copy of its own text, and the block cursor trails that
+ * copy — so the cursor always sits right after what you've typed. Mounted fresh per question.
+ */
+export function NumericAnswer({ ticker, unit, onSubmit }: NumericAnswerProps) {
   const [raw, setRaw] = useState("");
   const [isInvalid, setIsInvalid] = useState(false);
 
   return (
     <form
-      className="flex items-center gap-3"
+      className="flex flex-wrap items-center gap-x-3 gap-y-1"
       onSubmit={(event) => {
         event.preventDefault();
         const value = parseNumericInput(raw);
@@ -29,27 +34,39 @@ export function NumericAnswer({ unit, onSubmit }: NumericAnswerProps) {
         onSubmit(value, raw.trim());
       }}
     >
-      <input
-        // A fresh input per question, so focus lands on it every time without a click.
-        autoFocus
-        inputMode="decimal"
-        autoComplete="off"
-        aria-label="Your answer"
-        aria-invalid={isInvalid}
-        value={raw}
-        onChange={(event) => {
-          setRaw(event.target.value);
-          setIsInvalid(false);
-        }}
-        className={cn(
-          "w-48 rounded-md border bg-bg px-3 py-2 font-mono text-[18px] text-fg tabular-nums outline-none",
-          "focus-visible:border-accent focus-visible:outline-none",
-          isInvalid ? "border-down" : "border-border-strong",
-        )}
-      />
+      <label className="group flex items-center font-mono text-[18px] tabular-nums">
+        <span className="text-terminal-amber">{ticker}&gt;</span>
+        <span className="relative ml-2 inline-flex min-w-[14ch] items-center">
+          <span aria-hidden className="invisible whitespace-pre">
+            {raw}
+          </span>
+          <span
+            aria-hidden
+            className="cursor-blink inline-block h-[1.05em] w-[0.6em] bg-terminal-amber opacity-0 group-focus-within:opacity-100"
+          />
+          <input
+            // A fresh input per question, so focus lands here every time without a click.
+            autoFocus
+            inputMode="decimal"
+            autoComplete="off"
+            spellCheck={false}
+            aria-label="Your answer"
+            aria-invalid={isInvalid}
+            value={raw}
+            onChange={(event) => {
+              setRaw(event.target.value);
+              setIsInvalid(false);
+            }}
+            // The blinking block is the focus indicator here; the global ring would box it.
+            style={{ outline: "none" }}
+            className="absolute inset-0 w-full bg-transparent p-0 text-fg caret-transparent"
+          />
+        </span>
+      </label>
       {unit && <span className="font-mono text-[12px] text-muted">{unit}</span>}
-      <span className="font-mono text-[11px] text-muted">
-        <kbd className="rounded-sm border border-border-strong px-1.5 py-0.5">Enter</kbd> to submit
+      <span className={cn("font-mono text-[11px]", isInvalid ? "text-down" : "text-muted")}>
+        {isInvalid ? "NOT A NUMBER — RETYPE" : "ENTER"}{" "}
+        <span className="text-terminal-amber">&lt;GO&gt;</span>
       </span>
     </form>
   );

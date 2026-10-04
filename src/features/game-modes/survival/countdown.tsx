@@ -23,11 +23,14 @@ export function Countdown({ onDone }: CountdownProps) {
   }, [left, onDone]);
 
   return (
-    <section className="panel mx-auto max-w-xl px-6 py-16 text-center" aria-live="assertive">
-      <p className="label">Market opens in</p>
+    <section
+      className="mx-auto max-w-xl border border-border bg-bg px-6 py-16 text-center"
+      aria-live="assertive"
+    >
+      <p className="font-mono text-[10px] tracking-[0.16em] text-terminal-amber">MARKET OPENS IN</p>
       <p
         key={left}
-        className="countdown-tick mt-4 font-mono text-[72px] leading-none font-medium text-accent tabular-nums"
+        className="countdown-tick mt-4 font-mono text-[72px] leading-none font-medium text-terminal-amber tabular-nums"
       >
         {Math.max(left, 1)}
       </p>
