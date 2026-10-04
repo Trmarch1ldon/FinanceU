@@ -31,7 +31,7 @@ prevent.
 | F1 | Scaffold Next.js + TS + Tailwind + shadcn/ui; add `npm run agents` alias | Thomas | done | main (bootstrap) |
 | F2 | CI: run `npm run verify` (format:check + lint + typecheck + build) on PR | — | open | — |
 | F3 | `GameModeDefinition` contract + mode registry — must include `tick()` + `isOver()`, see DECISIONS | Josh | review | feat/mode-contract |
-| F4 | `useGameSession` engine: idle → playing → feedback → summary | — | open | — |
+| F4 | `useGameSession` engine: idle → playing → feedback → summary | Thomas | wip | feat/margin-call |
 | F5 | Shared game chrome: QuestionCard, AnswerButton, ScoreBar, ComboMeter, Timer, LivesRow | — | open | — |
 | F6 | Progress store: XP, levels, streak, badges (zustand + localStorage) | — | open | — |
 
@@ -55,7 +55,7 @@ Each mode is a self-contained folder. Two people building two modes share exactl
 |----|------|-------|--------|--------|
 | M1 | Classic — 10 questions, explanation after each (reference implementation) | — | open | — |
 | M2 | Time Attack — 60s, combo multiplier, speed bonus | — | open | — |
-| M3 | Survival — stock-survival: price decays while you think, correct answers spike it, run ends at delisting | — | open | — |
+| M3 | Survival — stock-survival: price decays while you think, correct answers spike it, run ends at delisting | Thomas | wip | feat/margin-call |
 | M4 | Daily Challenge — date-seeded, one attempt, feeds the streak | — | open | — |
 
 ## Screens — parallel-safe

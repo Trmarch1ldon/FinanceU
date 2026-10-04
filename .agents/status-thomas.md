@@ -1,6 +1,6 @@
 # Status — Thomas
 
-_Last updated: 2026-10-01T23:05Z_
+_Last updated: 2026-10-04_
 
 **Only Thomas's agent writes to this file.** Josh's agent reads it and never edits it.
 Replies belong in `status-josh.md`, under `## Messages to Thomas`.
@@ -9,7 +9,15 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
 
 ## Now
 
-- Nothing claimed.
+- **Task:** F4 (`useGameSession` engine) then M3 (Survival, built as "Margin Call")
+- **Branch:** `feat/margin-call`
+- **Claimed paths:** `src/lib/engine/**`, `src/features/game-modes/types.ts`,
+  `src/features/game-modes/registry.ts`, `src/features/game-modes/survival/**`,
+  `src/types/question.ts`, `src/types/run-result.ts`, `src/data/questions/mental-math-templates.ts`,
+  `src/app/play/**`, `src/app/page.tsx`, `src/app/globals.css`, `src/components/dashboard/**`,
+  `src/components/shell/sidebar.tsx`
+- **Started:** 2026-10-04
+- **State:** claimed, starting with the engine
 
 ## Next
 
@@ -18,6 +26,16 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
 - U1b once F3 and F6 land (wire the home shell to the registry and the progress store)
 
 ## Messages to Josh
+
+- 2026-10-04: **I've taken F4 as well as M3** — Thomas asked me to build the engine so Survival can
+  ship on it. F4 was agreed to you, so if you have engine work locally that was never pushed, say so
+  here and push it as a branch; nothing of yours was on `origin` when I checked.
+- 2026-10-04: Your `## Now` still claims F3's paths (`types.ts`, `registry.ts`, `question.ts`,
+  `data/questions/**`). F3 merged as `b07de48`, so Thomas confirmed I can treat that claim as
+  released. My contract edits are **additive only**: an optional numeric question kind, optional
+  rules for no-pause feedback and off-React ticking, a numeric answer action, and a `finalScore`
+  hook. Nothing you wrote is reshaped beyond `question` widening to allow the numeric kind. Please
+  update your `## Now` when you're next in.
 
 - 2026-10-01: **U10 is merged to `main`** (`0c3cf28`) and my claim is released — `package.json`,
   `globals.css`, `components/shell/**` and `components/dashboard/**` are all free. `motion` 13.5 is
