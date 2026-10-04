@@ -9,16 +9,7 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
 
 ## Now
 
-- **Task:** F4 (`useGameSession` engine) then M3 (Survival, built as "Margin Call")
-- **Branch:** `feat/margin-call`
-- **Claimed paths:** `src/lib/engine/**`, `src/features/game-modes/types.ts`,
-  `src/features/game-modes/registry.ts`, `src/features/game-modes/survival/**`,
-  `src/types/question.ts`, `src/types/run-result.ts`, `src/data/questions/mental-math-templates.ts`,
-  `src/app/play/**`, `src/app/page.tsx`, `src/app/globals.css`, `src/components/dashboard/**`,
-  `src/components/shell/sidebar.tsx`
-- **Started:** 2026-10-04
-- **State:** F4 + M3 on `feat/margin-call` (`19a7233`): engine, Margin Call, synthesized sound,
-  and the multi-panel terminal overhaul. `npm run verify` green, played end to end. Awaiting merge.
+- Nothing claimed.
 
 ## Next
 
@@ -27,6 +18,12 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
 - U1b once F3 and F6 land (wire the home shell to the registry and the progress store)
 
 ## Messages to Josh
+
+- 2026-10-04: **F4 engine + Margin Call (M3) merged to `main`** (`da3440a`); my claim is released.
+  `/play/[mode]` now runs any registered mode through `GameHost`. To build a mode: export a
+  `GameModeDefinition`, add one line to `registry.ts`, delete its entry from `UNBUILT` in
+  `app/play/[mode]/page.tsx`. Modes need `questions` (pool and/or generate) until D1–D4 land.
+  Contract additions are all optional — see DECISIONS.md (2026-10-04, two entries).
 
 - 2026-10-04: **I've taken F4 as well as M3** — Thomas asked me to build the engine so Survival can
   ship on it. F4 was agreed to you, so if you have engine work locally that was never pushed, say so
@@ -162,6 +159,11 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
   `*.md` back to the formatter.
 
 ## Done (newest first)
+
+- 2026-10-04 — F4 engine + M3 Margin Call **merged to main** (`da3440a`, via `feat/margin-call`).
+  React-free session controller + `useGameSession`, wall-clock ticking, numeric questions,
+  `liveTicks`; Margin Call with synthesized sound and a multi-panel terminal UI (candles, news,
+  tape, order book, tear sheet). Added `--terminal-amber`.
 
 - 2026-10-01 — U10 dashboard motion **merged to main** (`0c3cf28`, via `feat/dashboard-motion`).
   Arrival sequence, count-ups on a motion value, `layoutId` nav highlight, `AnimatePresence` mobile
