@@ -186,3 +186,30 @@ Added `onAnswer?(state, result)` beside the requested `tick` and `isOver`: a cor
 spike Survival's price, and that is mode-owned state the engine can't compute. Also added
 `rules.topics` (restrict the pool) and `rules.seededByDate` (Daily Challenge), so M4 doesn't need a
 contract change later.
+
+### 2026-10-04 — F4 engine shape, and additive contract changes for Survival
+
+The engine is a plain, React-free state machine (`lib/engine/session-controller.ts`) with a thin
+`useGameSession` subscription over it, so the rules can be driven without rendering anything.
+`/play/[mode]` resolves the mode from the registry and runs it through `GameHost`; modes in the nav
+that haven't registered yet render a placeholder instead of a 404.
+
+Survival (built as "Margin Call") needed four things the F3 contract couldn't express. All are
+**optional additions** — nothing existing was reshaped except `GameSession.question` widening:
+
+- **Typed answers.** `NumericQuestion` (`kind: "numeric"`, `answer`, `tolerance`) beside the
+  4-choice `Question`, joined as `PlayableQuestion`; `GameSession.answerNumber(value)`. Generated
+  from templates in `data/questions/mental-math-templates.ts`, so they never run out.
+- **No pause between questions.** `rules.feedbackMs`: undefined waits for `next()` (the old
+  behaviour), `0` serves the next question in the same update, `n` auto-advances after n ms.
+- **Ten ticks a second without re-rendering.** `rules.liveTicks` keeps ticks out of React;
+  `GameSession.live` (`get` / `subscribe`) is the live state for charts and tickers.
+- **A score that isn't a sum of answers.** `finalScore(state)` replaces the summed score at the end.
+
+Also: `questions: { pool, generate, generatedShare }` (where questions come from — the engine
+still does the picking), `difficultyAt(state)` to override the default ramp, and `bestCombo` on
+`GameState`.
+
+The clock is wall-clock, not tick-count. Background tabs throttle timers, and a run must keep
+draining while you're away rather than pause for whoever switches tabs, so each tick replays the
+real elapsed time in `tickMs` steps.
