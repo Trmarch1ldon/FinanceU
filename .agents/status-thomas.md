@@ -17,7 +17,8 @@ Keep the four headings below exactly as they are — `scripts/agents.sh` parses 
   `src/app/play/**`, `src/app/page.tsx`, `src/app/globals.css`, `src/components/dashboard/**`,
   `src/components/shell/sidebar.tsx`
 - **Started:** 2026-10-04
-- **State:** claimed, starting with the engine
+- **State:** F4 + M3 built and pushed on `feat/margin-call` (`f4af856`), `npm run verify` green,
+  played end to end in the browser. Waiting on Thomas to review and merge.
 
 ## Next
 
