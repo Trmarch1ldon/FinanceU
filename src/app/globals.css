@@ -42,6 +42,11 @@
      scarce. See .agents/DECISIONS.md (2026-10-04). */
   --terminal-amber: #fb8b1e;
 
+  /* The opponent in a head-to-head match. Cool against the player's amber, and clear of
+     green/red so it never reads as right/wrong or up/down. Game screens only. */
+  --rival: #3ec6e0;
+  --rival-dim: rgba(62, 198, 224, 0.14);
+
   /* ── Value. Gains/losses and right/wrong ONLY — never decoration, and always
         paired with ▲▼ or an icon so colour is never the sole signal. ──────────── */
   /* Measurement fills. Deliberately NOT the accent: orange means your progression
@@ -104,6 +109,8 @@
   --color-accent-dim: var(--accent-dim);
   --color-accent-edge: var(--accent-edge);
   --color-terminal-amber: var(--terminal-amber);
+  --color-rival: var(--rival);
+  --color-rival-dim: var(--rival-dim);
 
   --color-bar: var(--bar);
   --color-up: var(--up);
@@ -405,6 +412,37 @@
   opacity: 1;
 }
 
+/* Power-up cooldown: a bar drains across the card. Restarted by remounting with a key. */
+@keyframes cooldown-sweep {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+.cooldown-sweep {
+  transform-origin: left center;
+  animation: cooldown-sweep linear both;
+}
+
+/* "typing…" dots. */
+@keyframes typing-dot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.25;
+  }
+  30% {
+    opacity: 1;
+  }
+}
+
+.typing-dot {
+  animation: typing-dot 1.2s ease-in-out infinite;
+}
+
 /* New rows in News and Time & Sales slide in from above. */
 @keyframes row-in {
   from {
@@ -465,7 +503,8 @@
   .countdown-tick,
   .cursor-blink,
   .market-pulse,
-  .row-in {
+  .row-in,
+  .typing-dot {
     animation: none !important;
   }
 

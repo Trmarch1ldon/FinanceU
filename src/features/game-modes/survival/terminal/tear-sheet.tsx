@@ -1,5 +1,6 @@
 "use client";
 
+import { TerminalPanel } from "@/components/game/terminal-panel";
 import type { LiveState } from "@/features/game-modes/types";
 import { cn } from "@/lib/utils";
 
@@ -8,7 +9,6 @@ import { clock, money } from "../format";
 import { drainPerSec, readMarket } from "../market";
 import { CandleChart } from "./candle-chart";
 import { currentMomentum, ratingFor, unpackMarks } from "./candles";
-import { TerminalPanel } from "./terminal-panel";
 
 type TearSheetProps = {
   ticker: string;

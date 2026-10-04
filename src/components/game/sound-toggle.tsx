@@ -3,7 +3,7 @@
 import { useSyncExternalStore } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 
-import { isSoundOn, setSoundOn, subscribeSound } from "./sound";
+import { isSoundOn, setSoundOn, subscribeSound } from "@/lib/sound";
 
 /** Sound on/off. The `M` shortcut lives in the view, once, so two mounted toggles can't
  *  both flip it and cancel out. */

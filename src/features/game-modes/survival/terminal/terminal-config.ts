@@ -38,7 +38,6 @@ export const TERMINAL = {
 
   /** How often the price cells repaint (and flash). Faster is noise, not information. */
   quoteRefreshMs: 250,
-  flashMs: 300,
 
   /** Order book. */
   bookLevels: 5,

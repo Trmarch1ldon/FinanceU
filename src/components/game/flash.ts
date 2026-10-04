@@ -3,7 +3,7 @@
  * Web Animations, not a CSS class toggle, so restarting it mid-flash needs no forced reflow —
  * dozens of cells can flash a second without layout work.
  */
-import { TERMINAL as T } from "./terminal-config";
+const FLASH_MS = 300;
 
 const FLASH = {
   up: "rgba(0, 192, 118, 0.38)",
@@ -17,7 +17,7 @@ const prefersReducedMotion = () =>
 export function flash(el: HTMLElement, direction: "up" | "down") {
   if (prefersReducedMotion()) return;
   el.animate([{ backgroundColor: FLASH[direction] }, { backgroundColor: "transparent" }], {
-    duration: T.flashMs,
+    duration: FLASH_MS,
     easing: "ease-out",
   });
 }

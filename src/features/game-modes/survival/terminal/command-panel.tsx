@@ -3,13 +3,13 @@
 import { useEffect, useRef } from "react";
 import { useAnimate } from "motion/react";
 
+import { NumericAnswer } from "@/components/game/numeric-answer";
+import { TerminalPanel } from "@/components/game/terminal-panel";
 import type { LiveState } from "@/features/game-modes/types";
 import { isNumericQuestion } from "@/lib/engine/check-answer";
 import type { PlayableQuestion } from "@/types/question";
 
-import { NumericAnswer } from "../numeric-answer";
 import { RatingBadge } from "./rating-badge";
-import { TerminalPanel } from "./terminal-panel";
 import { VolatilityGauge } from "./volatility-gauge";
 
 export type LastResult = {
@@ -118,7 +118,7 @@ export function CommandPanel({
           {isNumeric ? (
             <NumericAnswer
               key={questionKey}
-              ticker={ticker}
+              prompt={ticker}
               unit={question.unit}
               onSubmit={onNumber}
             />

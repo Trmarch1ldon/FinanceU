@@ -2,14 +2,14 @@
 
 import { useEffect, useRef } from "react";
 
+import { setCell } from "@/components/game/flash";
+import { SoundToggle } from "@/components/game/sound-toggle";
 import type { LiveState } from "@/features/game-modes/types";
 
 import { MARGIN_CALL as C } from "../config";
 import { clock, money } from "../format";
 import { drainPerSec, readMarket } from "../market";
-import { SoundToggle } from "../sound-toggle";
 import { wallClock } from "./feed";
-import { setCell } from "./flash";
 import { TERMINAL as T } from "./terminal-config";
 
 type StatusStripProps = { ticker: string; live: LiveState };

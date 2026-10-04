@@ -2,11 +2,11 @@
 
 import { useEffect, useRef } from "react";
 
+import { flash } from "@/components/game/flash";
 import type { LiveState } from "@/features/game-modes/types";
 
 import { readMarket } from "../market";
 import type { Feed } from "./feed";
-import { flash } from "./flash";
 import { TERMINAL as T } from "./terminal-config";
 
 const LEVELS = T.bookLevels;

@@ -130,10 +130,3 @@ export function multipleChoiceShare(elapsedMs: number) {
   for (const step of C.multipleChoiceShare) if (sec >= step.fromSec) share = step.share;
   return share;
 }
-
-/** THOM for "thomas": first four letters of the handle, capitalised. */
-export const tickerFor = (handle: string) =>
-  handle
-    .replace(/[^a-z]/gi, "")
-    .slice(0, 4)
-    .toUpperCase() || "ANON";

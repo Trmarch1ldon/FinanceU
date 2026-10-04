@@ -1,11 +1,12 @@
 /**
- * Margin Call's sounds, synthesized with the Web Audio API — no files to download, no licences,
+ * Game sounds, synthesized with the Web Audio API — no files to download, no licences,
  * and no decode delay between a keypress and the sound it earns.
  *
  * Browsers won't make sound before a user gesture, so `unlockAudio()` must run inside one (the
  * Open Market click). Everything after that can play from timers.
  */
-import { MARGIN_CALL as C } from "./config";
+/** Master volume for every sound (0–1). Each sound's own level is relative to this. */
+const VOLUME = 0.35;
 
 let context: AudioContext | null = null;
 let master: GainNode | null = null;
@@ -29,7 +30,7 @@ export function setSoundOn(on: boolean) {
     // Not remembered, but still applied for this session below.
   }
   // Cut sounds already ringing, not just the next ones.
-  if (master && context) master.gain.setTargetAtTime(on ? C.volume : 0, context.currentTime, 0.01);
+  if (master && context) master.gain.setTargetAtTime(on ? VOLUME : 0, context.currentTime, 0.01);
   window.dispatchEvent(new Event(SOUND_CHANGED));
 }
 
@@ -48,7 +49,7 @@ function audio() {
     try {
       context = new AudioContext();
       master = context.createGain();
-      master.gain.value = isSoundOn() ? C.volume : 0;
+      master.gain.value = isSoundOn() ? VOLUME : 0;
       master.connect(context.destination);
     } catch {
       // No Web Audio (or blocked): play silently.
@@ -157,4 +158,25 @@ export function playMarginCall() {
   tone(440, 1.3, { type: "sawtooth", endFreq: 45, level: 0.2 });
   tone(330, 1.3, { type: "sine", endFreq: 40, level: 0.35 });
   noise(0.5, 180, 0.7, 1.15);
+}
+
+/** An attack lands on you: a two-tone alarm. */
+export function playAlarm() {
+  [0, 0.16].forEach((at) => {
+    tone(880, 0.12, { type: "square", level: 0.16, at });
+    tone(660, 0.12, { type: "square", level: 0.16, at: at + 0.08 });
+  });
+}
+
+/** You fire a power-up: a quick rising sweep. */
+export function playPowerUp() {
+  noise(0.05, 2500, 0.2);
+  tone(440, 0.22, { type: "triangle", endFreq: 1320, level: 0.35 });
+}
+
+/** Takeover complete: a bright major arpeggio over the bell. */
+export function playVictory() {
+  [523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((freq, i) =>
+    tone(freq, 0.6, { type: "triangle", level: 0.35, at: i * 0.09 }),
+  );
 }

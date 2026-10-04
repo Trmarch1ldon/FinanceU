@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { PagePlaceholder } from "@/components/shell/page-placeholder";
-import { getMode } from "@/features/game-modes/registry";
+import { getMode, getVersusMode } from "@/features/game-modes/registry";
 import { GameHost } from "@/lib/engine/game-host";
 
 /** Modes in the nav that haven't registered yet. Shown as a placeholder, not a 404, so the
@@ -28,7 +28,7 @@ const UNBUILT: Record<string, { title: string; description: string; task: string
 export default async function PlayPage({ params }: { params: Promise<{ mode: string }> }) {
   const { mode } = await params;
 
-  if (getMode(mode)) return <GameHost modeId={mode} />;
+  if (getMode(mode) || getVersusMode(mode)) return <GameHost modeId={mode} />;
 
   const unbuilt = UNBUILT[mode];
   if (unbuilt) return <PagePlaceholder {...unbuilt} />;

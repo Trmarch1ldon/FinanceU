@@ -3,15 +3,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { Countdown } from "@/components/game/countdown";
+import { FunctionKeyBar } from "@/components/game/function-key-bar";
+import { TerminalPanel } from "@/components/game/terminal-panel";
 import { mockUser } from "@/data/mock/user";
 import type { GameModeProps } from "@/features/game-modes/types";
-import { cn } from "@/lib/utils";
-import type { PlayableQuestion } from "@/types/question";
-
-import { MARGIN_CALL as C } from "./config";
-import { Countdown } from "./countdown";
-import { isBullRun, readMarket, tickerFor } from "./market";
-import { saveRun } from "./results";
 import {
   isSoundOn,
   playBullRun,
@@ -20,19 +16,24 @@ import {
   playMiss,
   setSoundOn,
   unlockAudio,
-} from "./sound";
+} from "@/lib/sound";
+import { tickerFor } from "@/lib/ticker";
+import { cn } from "@/lib/utils";
+import type { PlayableQuestion } from "@/types/question";
+
+import { MARGIN_CALL as C } from "./config";
+import { isBullRun, readMarket } from "./market";
+import { saveRun } from "./results";
 import { StartScreen } from "./start-screen";
 import { CandleChart } from "./terminal/candle-chart";
 import { CommandPanel } from "./terminal/command-panel";
 import { createFeed } from "./terminal/feed";
-import { FunctionKeyBar } from "./terminal/function-key-bar";
 import { HelpOverlay } from "./terminal/help-overlay";
 import { LimitDownWatch } from "./terminal/limit-down";
 import { SidePanels } from "./terminal/side-panels";
 import { StatusStrip } from "./terminal/status-strip";
 import { TearSheet } from "./terminal/tear-sheet";
 import { TERMINAL as T } from "./terminal/terminal-config";
-import { TerminalPanel } from "./terminal/terminal-panel";
 import { TradingHalted } from "./terminal/trading-halted";
 import { useBestScore } from "./use-best-score";
 
@@ -224,7 +225,7 @@ export function MarginCallView({ session }: GameModeProps) {
 
       {phase === "countdown" && (
         <div className="p-3 lg:p-5">
-          <Countdown onDone={openMarket} />
+          <Countdown onDone={openMarket} seconds={C.countdownSec} />
         </div>
       )}
 
@@ -272,7 +273,15 @@ export function MarginCallView({ session }: GameModeProps) {
             onNumber={onNumber}
           />
 
-          <FunctionKeyBar />
+          <FunctionKeyBar
+            keys={[
+              { key: "F1", label: "HELP" },
+              { key: "1–4", label: "ANSWER" },
+              { key: "ENTER", label: "<GO>" },
+              { key: "M", label: "MUTE" },
+              { key: "ESC", label: "QUIT" },
+            ]}
+          />
         </>
       )}
 

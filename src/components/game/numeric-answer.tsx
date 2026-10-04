@@ -6,8 +6,11 @@ import { parseNumericInput } from "@/lib/engine/check-answer";
 import { cn } from "@/lib/utils";
 
 type NumericAnswerProps = {
-  ticker: string;
+  /** The prompt label before the cursor — the player's ticker. */
+  prompt: string;
   unit?: string;
+  /** Locked by an opponent's Trading Halt: keeps focus, ignores typing and Enter. */
+  isFrozen?: boolean;
   onSubmit: (value: number, raw: string) => void;
 };
 
@@ -16,7 +19,7 @@ type NumericAnswerProps = {
  * The real input sits over an invisible copy of its own text, and the block cursor trails that
  * copy — so the cursor always sits right after what you've typed. Mounted fresh per question.
  */
-export function NumericAnswer({ ticker, unit, onSubmit }: NumericAnswerProps) {
+export function NumericAnswer({ prompt, unit, isFrozen = false, onSubmit }: NumericAnswerProps) {
   const [raw, setRaw] = useState("");
   const [isInvalid, setIsInvalid] = useState(false);
 
@@ -25,6 +28,7 @@ export function NumericAnswer({ ticker, unit, onSubmit }: NumericAnswerProps) {
       className="flex flex-wrap items-center gap-x-3 gap-y-1"
       onSubmit={(event) => {
         event.preventDefault();
+        if (isFrozen) return;
         const value = parseNumericInput(raw);
         // Not a number: don't burn the question on a typo, just say so.
         if (value === null) {
@@ -35,7 +39,7 @@ export function NumericAnswer({ ticker, unit, onSubmit }: NumericAnswerProps) {
       }}
     >
       <label className="group flex items-center font-mono text-[18px] tabular-nums">
-        <span className="text-terminal-amber">{ticker}&gt;</span>
+        <span className="text-terminal-amber">{prompt}&gt;</span>
         <span className="relative ml-2 inline-flex min-w-[14ch] items-center">
           <span aria-hidden className="invisible whitespace-pre">
             {raw}
@@ -53,6 +57,7 @@ export function NumericAnswer({ ticker, unit, onSubmit }: NumericAnswerProps) {
             aria-label="Your answer"
             aria-invalid={isInvalid}
             value={raw}
+            readOnly={isFrozen}
             onChange={(event) => {
               setRaw(event.target.value);
               setIsInvalid(false);

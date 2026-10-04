@@ -6,6 +6,7 @@
 import { TrendingDown } from "lucide-react";
 
 import { generateMentalMath } from "@/data/questions/mental-math-templates";
+import { MOCK_CONCEPT_QUESTIONS } from "@/data/questions/mock-concepts";
 import type { GameModeDefinition } from "@/features/game-modes/types";
 
 import { MARGIN_CALL } from "./config";
@@ -19,7 +20,6 @@ import {
   readMarket,
   tickMarket,
 } from "./market";
-import { MOCK_CONCEPT_QUESTIONS } from "./mock-questions";
 import { MarginCallView } from "./view";
 
 export const survivalMode: GameModeDefinition = {

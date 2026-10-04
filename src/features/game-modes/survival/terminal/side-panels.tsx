@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 
+import { TerminalPanel } from "@/components/game/terminal-panel";
 import type { LiveState } from "@/features/game-modes/types";
 import { cn } from "@/lib/utils";
 
 import type { Feed } from "./feed";
 import { NewsFeed } from "./news-feed";
 import { OrderBook } from "./order-book";
-import { TerminalPanel } from "./terminal-panel";
 import { TimeAndSales } from "./time-and-sales";
 
 const TABS = [

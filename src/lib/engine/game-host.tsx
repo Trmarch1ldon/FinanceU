@@ -1,6 +1,6 @@
 "use client";
 
-import { getMode } from "@/features/game-modes/registry";
+import { getMode, getVersusMode } from "@/features/game-modes/registry";
 
 import { ModeSession } from "./mode-session";
 
@@ -12,6 +12,10 @@ type GameHostProps = {
 
 /** Resolves a mode from the registry and runs it. */
 export function GameHost({ modeId }: GameHostProps) {
+  // Versus modes run their own match engine; the host only renders them.
+  const versus = getVersusMode(modeId);
+  if (versus) return <versus.Component key={versus.id} />;
+
   const mode = getMode(modeId);
   if (!mode) return null;
   // Keyed so navigating between modes builds a fresh session for each.

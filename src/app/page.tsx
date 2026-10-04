@@ -9,6 +9,7 @@ import { Panel } from "@/components/dashboard/panel";
 import { SkillRoadmap } from "@/components/dashboard/skill-roadmap";
 import { Sparkline } from "@/components/dashboard/sparkline";
 import { StatCard } from "@/components/dashboard/stat-card";
+import { TakeoverCard } from "@/components/dashboard/takeover-card";
 import { TickerBar } from "@/components/dashboard/ticker-bar";
 import { mockActivity } from "@/data/mock/activity";
 import { mockFriends, mockTicker } from "@/data/mock/friends";
@@ -51,7 +52,10 @@ export default function DashboardPage() {
         />
       </div>
 
-      <MarginCallCard />
+      <div className="grid gap-4 xl:grid-cols-2">
+        <MarginCallCard />
+        <TakeoverCard />
+      </div>
 
       <Panel
         label="Track"

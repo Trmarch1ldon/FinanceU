@@ -156,3 +156,16 @@ export type GameModeDefinition = {
 
   Component: ComponentType<GameModeProps>;
 };
+
+/**
+ * A head-to-head mode (Hostile Takeover). It runs its own match engine — two seats, a shared
+ * clock, attacks between players — so it doesn't take a single-player session; the host just
+ * renders its Component. Added beside the solo contract rather than reshaping it.
+ */
+export type VersusModeDefinition = {
+  id: string;
+  name: string;
+  tagline: string;
+  icon: LucideIcon;
+  Component: ComponentType;
+};

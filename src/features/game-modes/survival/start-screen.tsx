@@ -1,8 +1,9 @@
 "use client";
 
+import { SoundToggle } from "@/components/game/sound-toggle";
+
 import { MARGIN_CALL as C } from "./config";
 import { money } from "./format";
-import { SoundToggle } from "./sound-toggle";
 
 type StartScreenProps = {
   ticker: string;

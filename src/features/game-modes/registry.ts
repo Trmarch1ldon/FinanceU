@@ -11,9 +11,16 @@
  *   export const GAME_MODES: GameModeDefinition[] = [classicMode];
  */
 import { survivalMode } from "./survival/mode";
-import type { GameModeDefinition } from "./types";
+import { takeoverMode } from "./takeover/mode";
+import type { GameModeDefinition, VersusModeDefinition } from "./types";
 
 export const GAME_MODES: GameModeDefinition[] = [survivalMode];
 
+/** Head-to-head modes, one line each, sorted by id. */
+export const VERSUS_MODES: VersusModeDefinition[] = [takeoverMode];
+
 export const getMode = (id: string): GameModeDefinition | undefined =>
   GAME_MODES.find((mode) => mode.id === id);
+
+export const getVersusMode = (id: string): VersusModeDefinition | undefined =>
+  VERSUS_MODES.find((mode) => mode.id === id);
