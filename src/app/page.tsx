@@ -4,6 +4,7 @@ import { AccuracyByTopic } from "@/components/dashboard/accuracy-by-topic";
 import { ActivityHeatmap } from "@/components/dashboard/activity-heatmap";
 import { CountedValue } from "@/components/dashboard/counted-value";
 import { FriendsLeaderboard } from "@/components/dashboard/friends-leaderboard";
+import { MarginCallCard } from "@/components/dashboard/margin-call-card";
 import { Panel } from "@/components/dashboard/panel";
 import { SkillRoadmap } from "@/components/dashboard/skill-roadmap";
 import { Sparkline } from "@/components/dashboard/sparkline";
@@ -49,6 +50,8 @@ export default function DashboardPage() {
           note={`${user.friendsRank} of ${user.friendsTotal} among friends`}
         />
       </div>
+
+      <MarginCallCard />
 
       <Panel
         label="Track"
